@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import heroImage from "@/assets/images/hero-section-image.webp";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -37,6 +38,8 @@ const HeroSection = () => {
       <Button
         variant="contained"
         color="primary"
+        component={Link}
+        href="/dashboard/post-trip"
         sx={{
           mt: 2,
           px: {

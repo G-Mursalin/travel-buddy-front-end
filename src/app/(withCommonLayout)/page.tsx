@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import HeroSection from "@/components/ui/HomePage/HeroSection/HeroSection";
+import HeroSection from "@/components/UI/HomePage/HeroSection/HeroSection";
 
 const HomPage = () => {
   return (

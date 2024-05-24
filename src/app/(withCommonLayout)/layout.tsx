@@ -1,5 +1,5 @@
-import Footer from "@/components/shared/Footer/Footer";
-import NavBar from "@/components/shared/NavBar/NavBar";
+import Footer from "@/components/Shared/Footer/Footer";
+import NavBar from "@/components/Shared/NavBar/NavBar";
 import { ReactNode } from "react";
 
 export default function CommonLayout({ children }: { children: ReactNode }) {
