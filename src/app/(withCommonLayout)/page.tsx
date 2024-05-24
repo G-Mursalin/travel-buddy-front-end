@@ -1,7 +1,12 @@
-import Button from "@mui/material/Button";
+import { Container } from "@mui/material";
+import HeroSection from "@/components/ui/HomePage/HeroSection/HeroSection";
 
 const HomPage = () => {
-  return <div>Home Page</div>;
+  return (
+    <Container>
+      <HeroSection />
+    </Container>
+  );
 };
 
 export default HomPage;
