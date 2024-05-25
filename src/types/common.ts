@@ -10,3 +10,23 @@ export interface DrawerItem {
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
   child?: DrawerItem[];
 }
+
+export type IMeta = {
+  page: number;
+  limit: number;
+  total: number;
+};
+
+type ValidationErrorSource = {
+  path: string;
+  message: string;
+};
+
+export type ErrorResponse = {
+  status: number;
+  data: {
+    success: boolean;
+    message: string;
+    errorSources: ValidationErrorSource[];
+  };
+};
