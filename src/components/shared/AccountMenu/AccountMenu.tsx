@@ -1,3 +1,4 @@
+import { logoutUser } from "@/services/actions/logOutUser";
 import { Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -5,12 +6,19 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
+import { useRouter } from "next/navigation";
+
 import { MouseEvent, useState } from "react";
 
 const settings = ["My Profile", "Logout"];
 
 export default function AccountMenu() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logoutUser(router);
+  };
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -45,7 +53,16 @@ export default function AccountMenu() {
       >
         {settings.map((setting) => (
           <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">{setting}</Typography>
+            <Typography
+              onClick={() => {
+                if (setting === settings[1]) {
+                  handleLogout();
+                }
+              }}
+              textAlign="center"
+            >
+              {setting}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>

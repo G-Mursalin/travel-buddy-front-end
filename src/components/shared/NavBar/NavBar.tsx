@@ -1,7 +1,8 @@
 "use client";
 import AccountMenu from "@/components/Shared/AccountMenu/AccountMenu";
+import { isLoggedIn } from "@/services/auth.services";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -23,6 +24,7 @@ const pages = [
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const isUserLoggedIn = isLoggedIn();
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -142,7 +144,24 @@ const NavBar = () => {
             </Box>
 
             {/* Account Settings */}
-            <AccountMenu />
+            {isUserLoggedIn ? (
+              <AccountMenu />
+            ) : (
+              <Button
+                component={Link}
+                href={"/login"}
+                variant="contained"
+                color="primary"
+                sx={{
+                  borderRadius: "20px",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 20px",
+                }}
+              >
+                Login
+              </Button>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
