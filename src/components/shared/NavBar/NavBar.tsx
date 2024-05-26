@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 const pages = [
   {
@@ -24,7 +24,7 @@ const pages = [
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const isUserLoggedIn = isLoggedIn();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -33,6 +33,12 @@ const NavBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      setIsUserLoggedIn(true);
+    }
+  }, []);
 
   return (
     <Container>
@@ -145,7 +151,7 @@ const NavBar = () => {
 
             {/* Account Settings */}
             {isUserLoggedIn ? (
-              <AccountMenu />
+              <AccountMenu setIsUserLoggedIn={setIsUserLoggedIn} />
             ) : (
               <Button
                 component={Link}

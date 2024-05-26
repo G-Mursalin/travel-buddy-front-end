@@ -1,5 +1,4 @@
 "use client";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import { Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -9,9 +8,10 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import AccountMenu from "../../Shared/AccountMenu/AccountMenu";
 import SideBar from "../SideBar/SideBar";
+import { isLoggedIn } from "@/services/auth.services";
 
 const drawerWidth = 240;
 
@@ -20,8 +20,9 @@ export default function DashboardDrawer({
 }: {
   children: React.ReactNode;
 }) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -37,6 +38,12 @@ export default function DashboardDrawer({
       setMobileOpen(!mobileOpen);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      setIsUserLoggedIn(true);
+    }
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -90,7 +97,7 @@ export default function DashboardDrawer({
             </Box>
             {/* Account Setting */}
             <Stack direction="row" gap={3}>
-              <AccountMenu />
+              <AccountMenu setIsUserLoggedIn={setIsUserLoggedIn} />
             </Stack>
           </Box>
         </Toolbar>

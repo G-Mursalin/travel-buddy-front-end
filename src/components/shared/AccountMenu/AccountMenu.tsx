@@ -1,3 +1,4 @@
+"use client";
 import { logoutUser } from "@/services/actions/logOutUser";
 import { Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -11,13 +12,17 @@ import { useRouter } from "next/navigation";
 import { MouseEvent, useState } from "react";
 
 const settings = ["My Profile", "Logout"];
+type AccountMenuProps = {
+  setIsUserLoggedIn: (isLoggedIn: boolean) => void;
+};
 
-export default function AccountMenu() {
+export default function AccountMenu({ setIsUserLoggedIn }: AccountMenuProps) {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const router = useRouter();
 
   const handleLogout = () => {
     logoutUser(router);
+    setIsUserLoggedIn(false);
   };
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {

@@ -22,12 +22,10 @@ const defaultValues = { email: "", password: "" };
 const LoginForm = () => {
   const [loginUser] = useLoginUserMutation();
   const router = useRouter();
-
   // Handle Login
   const handleLoginSubmit = async (values: FieldValues) => {
     try {
       const res = await loginUser(values).unwrap();
-
       if (res?.data?.accessToken) {
         toast.success(res.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
@@ -40,7 +38,6 @@ const LoginForm = () => {
             acc + (acc ? " " : "") + errorSource.message,
           ""
         );
-
         toast.error(errorMessage);
       } else {
         toast.error("Fail to login");
