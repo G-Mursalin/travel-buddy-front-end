@@ -30,3 +30,12 @@ export type ErrorResponse = {
     errorSources: ValidationErrorSource[];
   };
 };
+
+export type TJwtPayload = {
+  id: string;
+  userName: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+};

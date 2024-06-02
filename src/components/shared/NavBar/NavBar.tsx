@@ -1,6 +1,7 @@
 "use client";
 import AccountMenu from "@/components/Shared/AccountMenu/AccountMenu";
-import { isLoggedIn } from "@/services/auth.services";
+import { getUserInfo, isLoggedIn } from "@/services/auth.services";
+import { TJwtPayload } from "@/types";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -25,6 +26,7 @@ const pages = [
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState("");
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -36,9 +38,14 @@ const NavBar = () => {
 
   useEffect(() => {
     if (isLoggedIn()) {
+      const user = getUserInfo() as TJwtPayload;
+      setUserRole(user.role);
       setIsUserLoggedIn(true);
     }
   }, []);
+
+  const dashboardPath =
+    userRole === "admin" ? "/dashboard/admin" : "/dashboard";
 
   return (
     <Container>
@@ -100,6 +107,13 @@ const NavBar = () => {
                     </Typography>
                   </MenuItem>
                 ))}
+                {isUserLoggedIn && (
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} href={dashboardPath}>
+                      Dashboard
+                    </Typography>
+                  </MenuItem>
+                )}
               </Menu>
             </Box>
 
@@ -146,6 +160,15 @@ const NavBar = () => {
                     {label}
                   </Typography>
                 ))}
+                {isUserLoggedIn && (
+                  <Typography
+                    sx={{ color: "white", fontWeight: "bold" }}
+                    component={Link}
+                    href={dashboardPath}
+                  >
+                    Dashboard
+                  </Typography>
+                )}
               </Stack>
             </Box>
 

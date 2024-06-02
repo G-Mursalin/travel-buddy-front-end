@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import heroImage from "@/assets/images/hero-section-image.webp";
 import Link from "next/link";
+import HeroButton from "./HeroButton";
 
 const HeroSection = () => {
   return (
@@ -35,28 +36,7 @@ const HeroSection = () => {
       >
         Find A Travel Buddy, Share Costs & Experiences
       </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        href="/dashboard/post-trip"
-        sx={{
-          mt: 2,
-          px: {
-            xs: 1,
-            sm: 2,
-            md: "3rem",
-          },
-          py: 2,
-          fontSize: {
-            xs: "0.6rem",
-            sm: "0.8rem",
-            md: "1rem",
-          },
-        }}
-      >
-        Share Your Trip
-      </Button>
+      <HeroButton />
       <Typography
         variant="body1"
         sx={{

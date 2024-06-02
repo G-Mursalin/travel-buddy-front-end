@@ -5,6 +5,7 @@ import {
   removeFromLocalStorage,
   setToLocalStorage,
 } from "@/utils/localStorage";
+import { TJwtPayload } from "@/types";
 
 export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
   return setToLocalStorage(authKey, accessToken);
@@ -14,7 +15,7 @@ export const getUserInfo = () => {
   const authToken = getFromLocalStorage(authKey);
 
   if (authToken) {
-    const decodedData: any = decodedToken(authToken);
+    const decodedData = decodedToken(authToken);
     return {
       ...decodedData,
       role: decodedData?.role.toLowerCase(),
