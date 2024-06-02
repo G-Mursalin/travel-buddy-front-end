@@ -1,7 +1,7 @@
 "use client";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
-import { useRegisterUserMutation } from "@/redux/api/authApi";
+import { userRegister } from "@/services/actions/userRegister";
 import { storeUserInfo } from "@/services/auth.services";
 import { ErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,19 +25,15 @@ export const defaultValues = {
 };
 
 const RegisterForm = () => {
-  const [registerUser] = useRegisterUserMutation();
   const router = useRouter();
 
   // Handle Register
   const handleRegister = async (values: FieldValues) => {
     try {
-      const res = await registerUser(values).unwrap();
-
-      toast.success(res.message);
-
+      const res = await userRegister(values);
       if (res?.data?.accessToken) {
+        toast.success(res.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {

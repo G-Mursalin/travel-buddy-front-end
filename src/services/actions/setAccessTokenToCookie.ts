@@ -3,7 +3,10 @@ import { authKey } from "@/constants/authKey";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const setAccessToken = (token: string, option?: { redirect: string }) => {
+const setAccessTokenToCookie = (
+  token: string,
+  option?: { redirect: string }
+) => {
   cookies().set(authKey, token);
 
   if (option && option.redirect) {
@@ -11,4 +14,4 @@ const setAccessToken = (token: string, option?: { redirect: string }) => {
   }
 };
 
-export default setAccessToken;
+export default setAccessTokenToCookie;

@@ -1,13 +1,12 @@
 "use client";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
-import { useLoginUserMutation } from "@/redux/api/authApi";
+import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { ErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid, Typography } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -20,16 +19,13 @@ export const validationSchema = z.object({
 const defaultValues = { email: "", password: "" };
 
 const LoginForm = () => {
-  const [loginUser] = useLoginUserMutation();
-  const router = useRouter();
   // Handle Login
   const handleLoginSubmit = async (values: FieldValues) => {
     try {
-      const res = await loginUser(values).unwrap();
+      const res = await userLogin(values);
       if (res?.data?.accessToken) {
         toast.success(res.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {
