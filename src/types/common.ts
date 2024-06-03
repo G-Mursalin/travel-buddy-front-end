@@ -44,6 +44,6 @@ export type TUser = {
   _id: string;
   userName: string;
   email: string;
-  status: "in-progress" | "blocked"; // Assuming there are multiple possible statuses
+  status: "in-progress" | "blocked";
   role: UserRole;
 };
