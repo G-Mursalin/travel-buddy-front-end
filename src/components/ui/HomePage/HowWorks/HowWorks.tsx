@@ -7,11 +7,11 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 const HowWorks = () => {
   return (
-    <Box sx={{ padding: 4 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        How GAFFL Works
+    <Box>
+      <Typography variant="h4" align="center" gutterBottom mb={2}>
+        How Travel Buddy Works
       </Typography>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} my={{ md: 5, xs: 3 }}>
         <Grid item xs={12} sm={6} md={3}>
           <Card
             sx={{

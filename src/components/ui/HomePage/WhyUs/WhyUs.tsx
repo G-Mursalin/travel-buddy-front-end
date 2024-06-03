@@ -4,8 +4,8 @@ import { Container, Typography, Link, Box } from "@mui/material";
 const TravelBuddySection = () => {
   return (
     <Container maxWidth="md">
-      <Box textAlign="center" my={4}>
-        <Typography variant="h4" component="h2" gutterBottom>
+      <Box textAlign="center" my={{ md: 14, xs: 8 }}>
+        <Typography variant="h4" component="h2" gutterBottom mb={3}>
           Why Travel Buddy is the Best Place for Finding a Travel Buddy
         </Typography>
         <Typography variant="body1" paragraph>
