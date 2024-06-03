@@ -11,12 +11,10 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { tagTypesList } from "../tag-types";
 
-// http://localhost:5000/api/v1
-// https://travel-buddy-back-end.vercel.app/api/v1
-
 // Set Token to header
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
+  // baseUrl: " https://travel-buddy-back-end.vercel.app/api/v1",
   prepareHeaders: (headers, { getState }) => {
     const token = getFromLocalStorage(authKey);
     if (token) {
