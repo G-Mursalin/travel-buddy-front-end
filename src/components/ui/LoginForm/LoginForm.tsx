@@ -1,6 +1,9 @@
 "use client";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
+import { baseApi } from "@/redux/api/baseApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { tagTypes } from "@/redux/tag-types";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { ErrorResponse } from "@/types";
@@ -19,13 +22,18 @@ export const validationSchema = z.object({
 const defaultValues = { email: "", password: "" };
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
   // Handle Login
   const handleLoginSubmit = async (values: FieldValues) => {
     try {
       const res = await userLogin(values);
-      if (res?.data?.accessToken) {
-        toast.success(res.message);
-        storeUserInfo({ accessToken: res?.data?.accessToken });
+      if (res && res.data) {
+        if (res?.data?.accessToken) {
+          toast.success(res.message);
+          storeUserInfo({ accessToken: res?.data?.accessToken });
+          // Invalidate Tags
+          dispatch(baseApi.util.invalidateTags([tagTypes.user]));
+        }
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {
@@ -36,7 +44,7 @@ const LoginForm = () => {
         );
         toast.error(errorMessage);
       } else {
-        toast.error("Fail to login");
+        toast.error("Invalid Email or Password");
       }
     }
   };

@@ -3,7 +3,8 @@ import { DrawerItem, UserRole } from "@/types";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import KeyIcon from "@mui/icons-material/Key";
-import TryIcon from "@mui/icons-material/Try";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import Person2Icon from "@mui/icons-material/Person2";
 
 export const dashboardSidebarLinksGenerator = (
   role: UserRole
@@ -19,7 +20,7 @@ export const dashboardSidebarLinksGenerator = (
     {
       title: "My Profile",
       path: "my-profile",
-      icon: KeyIcon,
+      icon: Person2Icon,
     },
   ];
 
@@ -34,7 +35,7 @@ export const dashboardSidebarLinksGenerator = (
         {
           title: "User Management",
           path: `${role}/user-management`,
-          icon: TryIcon,
+          icon: ManageAccountsIcon,
         }
       );
       break;

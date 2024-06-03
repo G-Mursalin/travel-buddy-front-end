@@ -1,6 +1,9 @@
 "use client";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
+import { baseApi } from "@/redux/api/baseApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { tagTypes } from "@/redux/tag-types";
 import { userRegister } from "@/services/actions/userRegister";
 import { storeUserInfo } from "@/services/auth.services";
 import { ErrorResponse } from "@/types";
@@ -25,6 +28,7 @@ export const defaultValues = {
 };
 
 const RegisterForm = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   // Handle Register
@@ -34,6 +38,8 @@ const RegisterForm = () => {
       if (res?.data?.accessToken) {
         toast.success(res.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
+        // Invalidate Tags
+        dispatch(baseApi.util.invalidateTags([tagTypes.user]));
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {

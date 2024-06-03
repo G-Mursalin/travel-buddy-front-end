@@ -63,6 +63,9 @@ export default function AccountMenu({ setIsUserLoggedIn }: AccountMenuProps) {
                 if (setting === settings[1]) {
                   handleLogout();
                 }
+                if (setting === settings[0]) {
+                  router.push("/dashboard/my-profile");
+                }
               }}
               textAlign="center"
             >
