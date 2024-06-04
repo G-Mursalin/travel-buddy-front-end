@@ -13,8 +13,7 @@ import { tagTypesList } from "../tag-types";
 
 // Set Token to header
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "http://localhost:5000/api/v1",
-  baseUrl: " https://travel-buddy-back-end.vercel.app/api/v1",
+  baseUrl: process.env.NEXT_PUBLIC_DEV_BACKEND_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = getFromLocalStorage(authKey);
     if (token) {

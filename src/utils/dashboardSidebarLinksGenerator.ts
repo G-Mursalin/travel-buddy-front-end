@@ -7,6 +7,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Person2Icon from "@mui/icons-material/Person2";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import HistoryIcon from "@mui/icons-material/History";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
 
 export const dashboardSidebarLinksGenerator = (
   role: UserRole
@@ -53,6 +54,11 @@ export const dashboardSidebarLinksGenerator = (
           title: "Post A Trip",
           path: `post-trip`,
           icon: CalendarMonthIcon,
+        },
+        {
+          title: "Your Posts",
+          path: `posts`,
+          icon: AllInboxIcon,
         },
         {
           title: "Trips",

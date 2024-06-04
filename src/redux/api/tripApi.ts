@@ -14,6 +14,16 @@ export const tripApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.trip],
     }),
+    // Get Login user Trips
+    getLoginUserTrips: build.query({
+      query: () => {
+        return {
+          url: "/trip/my-posts",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.trip],
+    }),
     // Get Trip By ID
     getTrip: build.query({
       query: (id: string) => {
@@ -33,10 +43,33 @@ export const tripApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.trip],
     }),
+    // Delete A  Trip
+    deleteTrip: build.mutation({
+      query: (id) => ({
+        url: `/trip/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.trip],
+    }),
+    // Delete A Doctor
+    updateTrip: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/trip/${id}`,
+        method: "PATCH",
+        body: { ...data },
+      }),
+      invalidatesTags: [tagTypes.trip],
+    }),
 
     // ****************
   }),
 });
 
-export const { useCreateTripMutation, useGetAllTripsQuery, useGetTripQuery } =
-  tripApi;
+export const {
+  useCreateTripMutation,
+  useGetAllTripsQuery,
+  useGetTripQuery,
+  useGetLoginUserTripsQuery,
+  useDeleteTripMutation,
+  useUpdateTripMutation,
+} = tripApi;

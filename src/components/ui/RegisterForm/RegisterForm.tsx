@@ -39,7 +39,14 @@ const RegisterForm = () => {
         toast.success(res.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
         // Invalidate Tags
-        dispatch(baseApi.util.invalidateTags([tagTypes.user]));
+        dispatch(
+          baseApi.util.invalidateTags([
+            tagTypes.user,
+            tagTypes.users,
+            tagTypes.tripRequest,
+            tagTypes.trip,
+          ])
+        );
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {
