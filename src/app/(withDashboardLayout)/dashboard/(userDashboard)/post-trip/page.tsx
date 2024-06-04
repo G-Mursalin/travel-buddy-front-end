@@ -11,6 +11,7 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const tripValidationSchema = z.object({
@@ -40,7 +41,7 @@ const tripValidationSchema = z.object({
       },
       { message: "Invalid endDate value" }
     ),
-  budget: z.string(),
+  budget: z.string().min(1, { message: "Budget cannot be empty" }),
   travelType: z.enum([...travelType] as [string, ...string[]], {
     required_error: "Travel Types is required",
     invalid_type_error:
@@ -54,6 +55,7 @@ const tripValidationSchema = z.object({
 
 const PostTrpPage = () => {
   const [createTrip, { isLoading }] = useCreateTripMutation();
+  const router = useRouter();
 
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
@@ -64,6 +66,7 @@ const PostTrpPage = () => {
       }).unwrap();
 
       toast.success(res.message);
+      router.push("/dashboard/trips");
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(

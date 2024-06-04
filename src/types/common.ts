@@ -47,3 +47,14 @@ export type TUser = {
   status: "in-progress" | "blocked";
   role: UserRole;
 };
+
+export type TTrip = {
+  _id: string;
+  destination: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  budget: number;
+  travelType: "adventure" | "leisure" | "business";
+  photo: string;
+};
