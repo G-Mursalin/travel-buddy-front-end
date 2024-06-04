@@ -6,6 +6,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Person2Icon from "@mui/icons-material/Person2";
 import LuggageIcon from "@mui/icons-material/Luggage";
+import HistoryIcon from "@mui/icons-material/History";
 
 export const dashboardSidebarLinksGenerator = (
   role: UserRole
@@ -57,6 +58,11 @@ export const dashboardSidebarLinksGenerator = (
           title: "Trips",
           path: "trips",
           icon: LuggageIcon,
+        },
+        {
+          title: "Trips History",
+          path: "trip-requested-history",
+          icon: HistoryIcon,
         }
       );
       break;
