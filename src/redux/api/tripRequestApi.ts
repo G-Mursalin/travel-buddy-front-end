@@ -3,6 +3,17 @@ import { baseApi } from "./baseApi";
 
 export const tripRequestApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    // Get All Trips
+    getRequestedTrips: build.query({
+      query: () => {
+        return {
+          url: "/trip-request",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.tripRequest],
+    }),
+
     // Create a Trip Request
     createTripRequest: build.mutation({
       query: (data) => ({
@@ -17,4 +28,5 @@ export const tripRequestApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateTripRequestMutation } = tripRequestApi;
+export const { useCreateTripRequestMutation, useGetRequestedTripsQuery } =
+  tripRequestApi;
