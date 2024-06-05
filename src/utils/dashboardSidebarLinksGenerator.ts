@@ -8,6 +8,7 @@ import Person2Icon from "@mui/icons-material/Person2";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import HistoryIcon from "@mui/icons-material/History";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 
 export const dashboardSidebarLinksGenerator = (
   role: UserRole
@@ -39,6 +40,11 @@ export const dashboardSidebarLinksGenerator = (
           title: "User Management",
           path: `${role}/user-management`,
           icon: ManageAccountsIcon,
+        },
+        {
+          title: "Trip Management",
+          path: `${role}/trip-management`,
+          icon: ManageSearchIcon,
         }
       );
       break;

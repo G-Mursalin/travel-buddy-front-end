@@ -1,7 +1,7 @@
 "use client";
 import PHForm from "@/components/Forms/PHForm";
 import { useGetTripQuery, useUpdateTripMutation } from "@/redux/api/tripApi";
-import { ErrorResponse, TTrip } from "@/types";
+import { ErrorResponse, TJwtPayload, TTrip } from "@/types";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +11,9 @@ import PHInput from "@/components/Forms/PHInput";
 import PHSelectField from "@/components/Forms/PHSelectField";
 import { travelType } from "@/constants/trip";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { getUserInfo } from "@/services/auth.services";
+import { USER_ROLE } from "@/constants/role";
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const tripValidationSchema = z.object({
@@ -53,6 +56,7 @@ const tripValidationSchema = z.object({
 });
 
 const EditPost = ({ id }: { id: string }) => {
+  const [userRole, setUserRole] = useState("");
   const { data, isLoading, isFetching, refetch } = useGetTripQuery(id);
   const [updateTrip] = useUpdateTripMutation();
   const router = useRouter();
@@ -67,7 +71,14 @@ const EditPost = ({ id }: { id: string }) => {
 
       toast.success(res.message);
       refetch();
-      router.push("/dashboard/posts");
+
+      // Redirect Users
+      if (userRole === USER_ROLE.USER) {
+        router.push("/dashboard/posts");
+      }
+      if (userRole === USER_ROLE.ADMIN) {
+        router.push("/dashboard/admin/trip-management");
+      }
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
@@ -81,6 +92,16 @@ const EditPost = ({ id }: { id: string }) => {
       }
     }
   };
+
+  useEffect(() => {
+    const user = getUserInfo() as TJwtPayload;
+
+    if (!user) {
+      return router.push("/login");
+    }
+
+    setUserRole(user.role);
+  }, [router]);
 
   if (isLoading || isFetching) {
     return <p>Loading...</p>;

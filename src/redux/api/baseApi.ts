@@ -13,7 +13,8 @@ import { tagTypesList } from "../tag-types";
 
 // Set Token to header
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_DEV_BACKEND_URL,
+  // baseUrl: process.env.NEXT_PUBLIC_DEV_BACKEND_URL,
+  baseUrl: process.env.NEXT_PUBLIC_PROD_BACKEND_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = getFromLocalStorage(authKey);
     if (token) {

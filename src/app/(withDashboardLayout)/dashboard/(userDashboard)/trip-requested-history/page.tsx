@@ -13,18 +13,22 @@ const TripRequestedHistoryPage = () => {
   const trips = data?.data;
 
   useEffect(() => {
-    const updateData = trips?.map((data: any) => {
-      return {
-        id: data._id,
-        photo: data.tripId.photo,
-        destination: data.tripId.destination,
-        description: data.tripId.description,
-        startDate: data.tripId.startDate,
-        endDate: data.tripId.endDate,
-        budget: data.tripId.budget,
-        status: data.status,
-      };
-    });
+    const updateData = trips
+      ?.map((data: any) => {
+        if (data.tripId) {
+          return {
+            id: data._id,
+            photo: data.tripId.photo,
+            destination: data.tripId.destination,
+            description: data.tripId.description,
+            startDate: data.tripId.startDate,
+            endDate: data.tripId.endDate,
+            budget: data.tripId.budget,
+            status: data.status,
+          };
+        }
+      })
+      .filter((item: any) => item !== undefined);
 
     setAllRequestedTrips(updateData);
   }, [trips]);
@@ -38,10 +42,10 @@ const TripRequestedHistoryPage = () => {
         return (
           <Box display="flex" alignItems="center" width="100%" height="100%">
             <Image
-              src={row.photo}
+              src={row?.photo}
               width={65}
               height={65}
-              alt={`${row.id}-image`}
+              alt={`${row?.id}-image`}
               style={{ borderRadius: "50%" }}
             />
           </Box>
