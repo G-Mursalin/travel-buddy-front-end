@@ -49,7 +49,7 @@ export const tripApi = baseApi.injectEndpoints({
         url: `/trip/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.trip],
+      invalidatesTags: [tagTypes.trip, tagTypes.tripRequest],
     }),
     // Delete A Doctor
     updateTrip: build.mutation({
@@ -58,7 +58,7 @@ export const tripApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: { ...data },
       }),
-      invalidatesTags: [tagTypes.trip],
+      invalidatesTags: [tagTypes.trip, tagTypes.tripRequest],
     }),
 
     // ****************
