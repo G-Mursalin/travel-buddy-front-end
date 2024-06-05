@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Pagination from "@mui/material/Pagination";
 import { toast } from "sonner";
+import Spinner from "@/components/Shared/Spinner/Spinner";
 
 type TRow = {
   id: string;
@@ -183,7 +184,7 @@ const TripManagementPage = () => {
           />
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Spinner />
       )}
     </Box>
   );

@@ -2,12 +2,14 @@
 
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import { useGetTripQuery } from "@/redux/api/tripApi";
 import { useCreateTripRequestMutation } from "@/redux/api/tripRequestApi";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { ErrorResponse, TTrip, TUser } from "@/types";
-import { Button, Grid } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
 type TParams = {
@@ -18,6 +20,8 @@ type TParams = {
 
 const TripRequestPage = ({ params }: TParams) => {
   const id = params?.tripId;
+  // State for agreement checkbox
+  const [agreed, setAgreed] = useState(false);
   const router = useRouter();
   const {
     data: tripData,
@@ -58,7 +62,7 @@ const TripRequestPage = ({ params }: TParams) => {
   };
 
   if (isTripLoading || isTripFetching || isUserLoading || isUserFetching) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   const trip: TTrip = tripData?.data;
@@ -142,7 +146,19 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
         </Grid>
-        <Button type="submit">Send Request</Button>
+        {/* Aggrement Checkbox */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+          }
+          label="Agreement to terms and conditions"
+        />
+        <Button type="submit" disabled={!agreed}>
+          Send Request
+        </Button>
       </PHForm>
     </>
   );

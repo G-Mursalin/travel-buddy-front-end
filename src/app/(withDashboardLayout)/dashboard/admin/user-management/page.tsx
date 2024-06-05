@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import { USER_ROLE, UserStatus } from "@/constants/role";
 import {
   useChangeUserRoleMutation,
@@ -116,10 +117,15 @@ const UserManagementPage = () => {
     <Box>
       {!isFetching ? (
         <Box my={2}>
-          <DataGrid autoHeight rows={allUsers ?? []} columns={columns} />
+          <DataGrid
+            autoHeight
+            hideFooterPagination
+            rows={allUsers ?? []}
+            columns={columns}
+          />
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Spinner />
       )}
     </Box>
   );

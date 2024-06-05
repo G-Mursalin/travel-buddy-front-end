@@ -18,6 +18,11 @@ import { MouseEvent, useEffect, useState } from "react";
 const pages = [
   {
     id: "1",
+    path: "/",
+    label: "Home",
+  },
+  {
+    id: "2",
     path: "/about-us",
     label: "About Us",
   },

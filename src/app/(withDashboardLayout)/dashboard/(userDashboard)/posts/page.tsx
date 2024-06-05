@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import {
   useDeleteTripMutation,
   useGetLoginUserTripsQuery,
@@ -148,7 +149,7 @@ const PostsPage = () => {
           />
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Spinner />
       )}
     </Box>
   );

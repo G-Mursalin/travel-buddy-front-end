@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import { useGetRequestedTripsQuery } from "@/redux/api/tripRequestApi";
 import { Box } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -72,7 +73,7 @@ const TripRequestedHistoryPage = () => {
           />
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Spinner />
       )}
     </Box>
   );

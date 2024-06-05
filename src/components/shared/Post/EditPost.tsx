@@ -1,4 +1,5 @@
 "use client";
+
 import PHForm from "@/components/Forms/PHForm";
 import { useGetTripQuery, useUpdateTripMutation } from "@/redux/api/tripApi";
 import { ErrorResponse, TJwtPayload, TTrip } from "@/types";
@@ -14,6 +15,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "@/services/auth.services";
 import { USER_ROLE } from "@/constants/role";
+import Spinner from "../Spinner/Spinner";
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const tripValidationSchema = z.object({
@@ -104,7 +106,7 @@ const EditPost = ({ id }: { id: string }) => {
   }, [router]);
 
   if (isLoading || isFetching) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   const trip: TTrip = data?.data;

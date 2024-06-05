@@ -1,5 +1,7 @@
 "use client";
 
+import Spinner from "@/components/Shared/Spinner/Spinner";
+import { travelType } from "@/constants/trip";
 import { useGetAllTripsQuery } from "@/redux/api/tripApi";
 import { TTrip } from "@/types";
 import {
@@ -9,10 +11,15 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  MenuItem,
+  Pagination,
   TextField,
-  Typography
+  Typography,
+  Select,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
 } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/system";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
@@ -30,10 +37,12 @@ const TripsPage = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTravelType, setSelectedTravelType] = useState("");
 
   query["page"] = page;
   query["limit"] = limit;
   query["searchTerm"] = searchTerm;
+  if (selectedTravelType) query["travelType"] = selectedTravelType;
 
   const {
     data: trips,
@@ -53,23 +62,51 @@ const TripsPage = () => {
     setPage(1);
   };
 
+  // Handle Select Change
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    setSelectedTravelType(event.target.value as string);
+    setPage(1);
+  };
+
   // Loading State
   if (isLoading || isFetching) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   return (
     <Box sx={{ flexGrow: 1, padding: 3 }}>
-      {/* Search Bar */}
-      <Box sx={{ marginBottom: 3 }}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          value={searchTerm}
-          placeholder="Search By: Destination, Description, Travel Types"
-          onChange={handleSearchChange}
-        />
-      </Box>
+      {/* Search Bar and Select */}
+      <Grid container spacing={2} sx={{ marginBottom: 3 }}>
+        <Grid item xs={12} sm={8}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            value={searchTerm}
+            placeholder="Search By: Destination, Description, Travel Types"
+            onChange={handleSearchChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="travel-type-select-label">Travel Type</InputLabel>
+            <Select
+              labelId="travel-type-select-label"
+              value={selectedTravelType}
+              onChange={handleSelectChange}
+              label="Travel Type"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {travelType.map((type: string) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       {/* Cards */}
       <Grid container spacing={3}>
         {trips?.data.map((trip: TTrip) => (

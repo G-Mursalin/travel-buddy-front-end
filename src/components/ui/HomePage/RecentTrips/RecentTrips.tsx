@@ -1,7 +1,7 @@
 "use client";
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import { useGetAllTripsQuery } from "@/redux/api/tripApi";
 import { TTrip } from "@/types";
-import { getRecentTrips } from "@/utils/getRecentTrips";
 import {
   Box,
   Button,
@@ -24,7 +24,7 @@ const RecentTrips = () => {
   });
 
   if (isLoading || isFetching) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   const trips = data?.data;

@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Shared/Spinner/Spinner";
 import { useGetTripQuery } from "@/redux/api/tripApi";
 import { TTrip } from "@/types";
 import { Box, Button, Card, CardMedia, Grid, Typography } from "@mui/material";
@@ -17,7 +18,7 @@ const TripDetailsPage = ({ params }: TParams) => {
   const router = useRouter();
 
   if (isLoading || isFetching) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   const trip: TTrip = data?.data;
