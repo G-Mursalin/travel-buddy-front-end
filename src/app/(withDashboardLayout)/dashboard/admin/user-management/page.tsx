@@ -116,7 +116,7 @@ const UserManagementPage = () => {
     <Box>
       {!isFetching ? (
         <Box my={2}>
-          <DataGrid rows={allUsers ?? []} columns={columns} />
+          <DataGrid autoHeight rows={allUsers ?? []} columns={columns} />
         </Box>
       ) : (
         <h1>Loading.....</h1>

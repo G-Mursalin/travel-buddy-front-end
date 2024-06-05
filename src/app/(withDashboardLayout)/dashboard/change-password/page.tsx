@@ -2,15 +2,17 @@
 
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { FieldValues } from "react-hook-form";
-import { z } from "zod";
-import KeyIcon from "@mui/icons-material/Key";
+import { authKey } from "@/constants/authKey";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { deleteCookies } from "@/services/actions/deleteCookies";
 import { ErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import KeyIcon from "@mui/icons-material/Key";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const validationSchema = z.object({
   oldPassword: z.string().min(6, "Must be at least 6 characters long"),
@@ -27,7 +29,6 @@ const ChangePassword = () => {
       const res = await changePassword(values).unwrap();
 
       toast.success("Password Changed Successfully. Please login again");
-      router.push("/login");
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(

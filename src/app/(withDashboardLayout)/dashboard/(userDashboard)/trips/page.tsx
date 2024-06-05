@@ -9,15 +9,13 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  InputAdornment,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { styled } from "@mui/system";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 
 const TravelCard = styled(Card)({
   display: "flex",

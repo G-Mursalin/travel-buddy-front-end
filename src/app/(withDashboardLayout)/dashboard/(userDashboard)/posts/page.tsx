@@ -140,7 +140,12 @@ const PostsPage = () => {
     <Box>
       {!isFetching || !isLoading ? (
         <Box my={2}>
-          <DataGrid rows={allTrips ?? []} columns={columns} />
+          <DataGrid
+            hideFooterPagination
+            autoHeight
+            rows={allTrips ?? []}
+            columns={columns}
+          />
         </Box>
       ) : (
         <h1>Loading.....</h1>

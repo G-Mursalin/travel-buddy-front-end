@@ -83,9 +83,7 @@ export default function DashboardDrawer({
                 noWrap
                 component="div"
                 sx={{ color: "rgba(11, 17, 52, 0.6)" }}
-              >
-                {"Guest"}
-              </Typography>
+              ></Typography>
               <Typography
                 variant="h6"
                 noWrap

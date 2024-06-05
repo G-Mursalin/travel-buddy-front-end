@@ -2,7 +2,7 @@ import { FieldValues } from "react-hook-form";
 import setAccessTokenToCookie from "./setAccessTokenToCookie";
 
 export const userLogin = async (data: FieldValues) => {
-  const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export const userLogin = async (data: FieldValues) => {
 
   if (userInfo.data.accessToken) {
     setAccessTokenToCookie(userInfo.data.accessToken, {
-      redirect: "/dashboard",
+      redirect: "/",
     });
   }
 

@@ -64,7 +64,12 @@ const TripRequestedHistoryPage = () => {
     <Box>
       {!isFetching || !isLoading ? (
         <Box my={2}>
-          <DataGrid rows={allRequestedTrips ?? []} columns={columns} />
+          <DataGrid
+            hideFooterPagination
+            autoHeight
+            rows={allRequestedTrips ?? []}
+            columns={columns}
+          />
         </Box>
       ) : (
         <h1>Loading.....</h1>

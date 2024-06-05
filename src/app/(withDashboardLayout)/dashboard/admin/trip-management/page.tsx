@@ -157,6 +157,7 @@ const TripManagementPage = () => {
         <Box my={2}>
           <DataGrid
             hideFooterPagination
+            autoHeight
             rows={allTrips ?? []}
             columns={columns}
             slots={{

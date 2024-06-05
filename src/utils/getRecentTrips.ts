@@ -1,6 +1,6 @@
 export const getRecentTrips = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/trip?page=1&limit=8`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/trip?page=1&limit=8`,
     {
       cache: "no-store",
     }

@@ -12,6 +12,7 @@ const roleBasedPrivateRoutes = {
     "posts",
     "trips",
     "trip-requested-history",
+    /^\/dashboard\/trip-request\/[a-zA-Z0-9]+$/,
     "change-password",
     "my-profile",
   ],

@@ -8,7 +8,7 @@ import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { ErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -62,6 +62,20 @@ const LoginForm = () => {
       resolver={zodResolver(validationSchema)}
       defaultValues={defaultValues}
     >
+      <Box
+        sx={{
+          border: "1px solid red",
+          padding: "8px",
+          marginBottom: "16px",
+        }}
+      >
+        Admin Role:
+        <p> Email: admin@gmail.com</p>
+        <p>password: 123456</p>
+        User Role:
+        <p> Email: user@gmail.com</p>
+        <p>password: 123456</p>
+      </Box>
       <Grid container spacing={2} my={1}>
         <Grid item md={6}>
           <PHInput name="email" label="Email" type="email" fullWidth={true} />
