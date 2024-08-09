@@ -1,7 +1,7 @@
-"use client";
-import Spinner from "@/components/Shared/Spinner/Spinner";
-import { useGetAllTripsQuery } from "@/redux/api/tripApi";
-import { TTrip } from "@/types";
+// import Spinner from '@/components/Shared/Spinner/Spinner';
+// import { useGetAllTripsQuery } from '@/redux/api/tripApi';
+import { TTrip } from '@/types';
+import { getRecentTrips } from '@/utils/getRecentTrips';
 import {
   Box,
   Button,
@@ -10,24 +10,24 @@ import {
   CardMedia,
   Grid,
   Typography,
-} from "@mui/material";
-import Link from "next/link";
+} from '@mui/material';
+import Link from 'next/link';
 
-const RecentTrips = () => {
+const RecentTrips = async () => {
   // This throw Error when deploy to vercel
-  //   const { data: trips } = await getRecentTrips();
+  const { data: trips } = await getRecentTrips();
 
   //   Client Side Rendering
-  const { data, isLoading, isFetching } = useGetAllTripsQuery({
-    page: 1,
-    limit: 8,
-  });
+  // const { data, isLoading, isFetching } = useGetAllTripsQuery({
+  //   page: 1,
+  //   limit: 8,
+  // });
 
-  if (isLoading || isFetching) {
-    return <Spinner />;
-  }
+  // if (isLoading || isFetching) {
+  //   return <Spinner />;
+  // }
 
-  const trips = data?.data;
+  // const trips = data?.data;
 
   return (
     <Box sx={{ flexGrow: 1, padding: 3 }}>
@@ -40,10 +40,10 @@ const RecentTrips = () => {
           <Grid item key={trip._id} xs={12} sm={6} md={3}>
             <Card
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                height: "100%",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
               }}
             >
               <CardMedia
@@ -85,7 +85,7 @@ const RecentTrips = () => {
           </Grid>
         ))}
       </Grid>
-      <Box sx={{ textAlign: "center", marginTop: 3 }}>
+      <Box sx={{ textAlign: 'center', marginTop: 3 }}>
         <Button
           variant="contained"
           component={Link}

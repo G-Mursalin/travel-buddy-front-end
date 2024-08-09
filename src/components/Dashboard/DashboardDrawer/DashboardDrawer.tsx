@@ -1,17 +1,17 @@
-"use client";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Stack } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import AccountMenu from "../../Shared/AccountMenu/AccountMenu";
-import SideBar from "../SideBar/SideBar";
-import { isLoggedIn } from "@/services/auth.services";
+'use client';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Stack } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import AccountMenu from '../../Shared/AccountMenu/AccountMenu';
+import SideBar from '../SideBar/SideBar';
+import { isLoggedIn } from '@/services/auth.services';
 
 const drawerWidth = 240;
 
@@ -46,16 +46,16 @@ export default function DashboardDrawer({
   }, []);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          background: "#F4F7FE",
+          background: '#F4F7FE',
           boxShadow: 0,
-          borderBottom: "1px solid #ddd",
+          borderBottom: '1px solid #ddd',
           py: 1,
         }}
       >
@@ -65,16 +65,16 @@ export default function DashboardDrawer({
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { sm: 'none' } }}
           >
-            <MenuIcon sx={{ color: "primary.main" }} />
+            <MenuIcon sx={{ color: 'primary.main' }} />
           </IconButton>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
             }}
           >
             <Box>
@@ -82,13 +82,13 @@ export default function DashboardDrawer({
                 variant="body2"
                 noWrap
                 component="div"
-                sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+                sx={{ color: 'rgba(11, 17, 52, 0.6)' }}
               ></Typography>
               <Typography
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ color: "primary.main" }}
+                sx={{ color: 'primary.main' }}
               >
                 Welcome to Travel Buddy
               </Typography>
@@ -114,9 +114,9 @@ export default function DashboardDrawer({
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}
@@ -126,9 +126,9 @@ export default function DashboardDrawer({
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}
