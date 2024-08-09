@@ -1,7 +1,7 @@
 // import Spinner from '@/components/Shared/Spinner/Spinner';
 // import { useGetAllTripsQuery } from '@/redux/api/tripApi';
-import { TTrip } from '@/types';
 import { getRecentTrips } from '@/utils/getRecentTrips';
+import { TTrip } from '@/types';
 import {
   Box,
   Button,

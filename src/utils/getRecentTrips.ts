@@ -1,13 +1,13 @@
 export const getRecentTrips = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/trip?page=1&limit=8`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL as string}/trip?page=1&limit=8`,
     {
-      cache: "no-store",
+      cache: 'no-store',
     }
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch recent trips");
+    throw new Error('Failed to fetch recent trips');
   }
 
   return res.json();
