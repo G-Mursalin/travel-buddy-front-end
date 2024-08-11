@@ -1,25 +1,26 @@
-"use client";
-import PHForm from "@/components/Forms/PHForm";
-import PHInput from "@/components/Forms/PHInput";
-import { baseApi } from "@/redux/api/baseApi";
-import { useAppDispatch } from "@/redux/hooks";
-import { tagTypes } from "@/redux/tag-types";
-import { userLogin } from "@/services/actions/userLogin";
-import { storeUserInfo } from "@/services/auth.services";
-import { ErrorResponse } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import Link from "next/link";
-import { FieldValues } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+'use client';
+
+import PHForm from '@/components/Forms/PHForm';
+import PHInput from '@/components/Forms/PHInput';
+import { baseApi } from '@/redux/api/baseApi';
+import { useAppDispatch } from '@/redux/hooks';
+import { tagTypes } from '@/redux/tag-types';
+import { userLogin } from '@/services/actions/userLogin';
+import { storeUserInfo } from '@/services/auth.services';
+import { ErrorResponse } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import Link from 'next/link';
+import { FieldValues } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 export const validationSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Must be at least 6 characters"),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Must be at least 6 characters'),
 });
 
-const defaultValues = { email: "", password: "" };
+const defaultValues = { email: '', password: '' };
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const LoginForm = () => {
         if (res?.data?.accessToken) {
           toast.success(res.message);
           storeUserInfo({ accessToken: res?.data?.accessToken });
+
           // Invalidate Tags
           dispatch(
             baseApi.util.invalidateTags([
@@ -46,12 +48,12 @@ const LoginForm = () => {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
           (acc: string, errorSource: Record<string, any>) =>
-            acc + (acc ? " " : "") + errorSource.message,
-          ""
+            acc + (acc ? ' ' : '') + errorSource.message,
+          ''
         );
         toast.error(errorMessage);
       } else {
-        toast.error("Invalid Email or Password");
+        toast.error('Invalid Email or Password');
       }
     }
   };
@@ -64,9 +66,9 @@ const LoginForm = () => {
     >
       <Box
         sx={{
-          border: "1px solid red",
-          padding: "8px",
-          marginBottom: "16px",
+          border: '1px solid red',
+          padding: '8px',
+          marginBottom: '16px',
         }}
       >
         Admin Role:
@@ -96,7 +98,7 @@ const LoginForm = () => {
 
       <Button
         sx={{
-          margin: "10px 0px",
+          margin: '10px 0px',
         }}
         fullWidth={true}
         type="submit"

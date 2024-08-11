@@ -1,5 +1,3 @@
-// import Spinner from '@/components/Shared/Spinner/Spinner';
-// import { useGetAllTripsQuery } from '@/redux/api/tripApi';
 import { getRecentTrips } from '@/utils/getRecentTrips';
 import { TTrip } from '@/types';
 import {
@@ -14,20 +12,7 @@ import {
 import Link from 'next/link';
 
 const RecentTrips = async () => {
-  // This throw Error when deploy to vercel
   const { data: trips } = await getRecentTrips();
-
-  //   Client Side Rendering
-  // const { data, isLoading, isFetching } = useGetAllTripsQuery({
-  //   page: 1,
-  //   limit: 8,
-  // });
-
-  // if (isLoading || isFetching) {
-  //   return <Spinner />;
-  // }
-
-  // const trips = data?.data;
 
   return (
     <Box sx={{ flexGrow: 1, padding: 3 }}>

@@ -1,37 +1,43 @@
-"use client";
-import AccountMenu from "@/components/Shared/AccountMenu/AccountMenu";
-import { getUserInfo, isLoggedIn } from "@/services/auth.services";
-import { TJwtPayload } from "@/types";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Button, Stack } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
-import { MouseEvent, useEffect, useState } from "react";
+'use client';
+
+import AccountMenu from '@/components/Shared/AccountMenu/AccountMenu';
+import { getUserInfo, isLoggedIn } from '@/services/auth.services';
+import { TJwtPayload } from '@/types';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Button, Stack } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { MouseEvent, useEffect, useState } from 'react';
 
 const pages = [
   {
-    id: "1",
-    path: "/",
-    label: "Home",
+    id: '1',
+    path: '/',
+    label: 'Home',
   },
   {
-    id: "2",
-    path: "/about-us",
-    label: "About Us",
+    id: '2',
+    path: '/about-us',
+    label: 'About Us',
+  },
+  {
+    id: '3',
+    path: '/all-trips',
+    label: 'All Trips',
   },
 ];
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState('');
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -50,7 +56,7 @@ const NavBar = () => {
   }, []);
 
   const dashboardPath =
-    userRole === "admin" ? "/dashboard/admin" : "/dashboard";
+    userRole === 'admin' ? '/dashboard/admin' : '/dashboard';
 
   return (
     <Container>
@@ -65,18 +71,18 @@ const NavBar = () => {
               href="/"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
+                display: { xs: 'none', md: 'flex' },
                 fontWeight: 700,
-                letterSpacing: ".1rem",
-                color: "inherit",
-                textDecoration: "none",
+                letterSpacing: '.1rem',
+                color: 'inherit',
+                textDecoration: 'none',
               }}
             >
               Travel Buddy
             </Typography>
 
             {/* Small Screen Nav Links */}
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -91,18 +97,18 @@ const NavBar = () => {
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
+                  vertical: 'bottom',
+                  horizontal: 'left',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
+                  vertical: 'top',
+                  horizontal: 'left',
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{
-                  display: { xs: "block", md: "none" },
+                  display: { xs: 'block', md: 'none' },
                 }}
               >
                 {pages.map(({ id, path, label }) => (
@@ -130,12 +136,12 @@ const NavBar = () => {
                 component="p"
                 sx={{
                   mr: 2,
-                  display: { xs: "flex", md: "none" },
+                  display: { xs: 'flex', md: 'none' },
                   flexGrow: 1,
-                  fontSize: "1rem",
-                  letterSpacing: ".1rem",
-                  color: "inherit",
-                  textDecoration: "none",
+                  fontSize: '1rem',
+                  letterSpacing: '.1rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
                 }}
               >
                 Travel Buddy
@@ -147,17 +153,17 @@ const NavBar = () => {
               sx={{
                 flexGrow: 1,
                 display: {
-                  xs: "none",
-                  md: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  xs: 'none',
+                  md: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 },
               }}
             >
               <Stack direction="row" justifyContent="space-between" gap={4}>
                 {pages.map(({ id, path, label }) => (
                   <Typography
-                    sx={{ color: "white", fontWeight: "bold" }}
+                    sx={{ color: 'white', fontWeight: 'bold' }}
                     key={id}
                     component={Link}
                     href={path}
@@ -167,7 +173,7 @@ const NavBar = () => {
                 ))}
                 {isUserLoggedIn && (
                   <Typography
-                    sx={{ color: "white", fontWeight: "bold" }}
+                    sx={{ color: 'white', fontWeight: 'bold' }}
                     component={Link}
                     href={dashboardPath}
                   >
@@ -183,14 +189,14 @@ const NavBar = () => {
             ) : (
               <Button
                 component={Link}
-                href={"/login"}
+                href={'/login'}
                 variant="contained"
                 color="primary"
                 sx={{
-                  borderRadius: "20px",
-                  textTransform: "none",
-                  fontSize: "16px",
-                  padding: "10px 20px",
+                  borderRadius: '20px',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 20px',
                 }}
               >
                 Login
