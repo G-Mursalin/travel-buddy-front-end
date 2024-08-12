@@ -9,7 +9,11 @@ import { ErrorResponse } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, Grid } from '@mui/material';
-import { CldUploadWidget } from 'next-cloudinary';
+import {
+  CldUploadWidget,
+  CloudinaryUploadWidgetInfo,
+  CloudinaryUploadWidgetResults,
+} from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
@@ -60,12 +64,11 @@ const PostTrpPage = () => {
 
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
-    console.log(values);
     try {
       const res = await createTrip({
         ...values,
         budget: Number(values.budget),
-        photo: uploadedImages,
+        photos: uploadedImages.map((val, i) => ({ id: i, image: val })),
       }).unwrap();
       toast.success(res.message);
       router.push('/dashboard/trips');
@@ -155,9 +158,14 @@ const PostTrpPage = () => {
         <Grid item xs={12} sm={12} md={4}>
           <CldUploadWidget
             uploadPreset="travel_buddy"
-            onSuccess={(result) => {
-              const newImageUrl = result.info.secure_url;
-              setUploadedImages((prev) => [...prev, newImageUrl]);
+            onSuccess={(result: CloudinaryUploadWidgetResults) => {
+              if (result.info && typeof result.info !== 'string') {
+                const info: CloudinaryUploadWidgetInfo = result.info;
+                const newImageUrl = info.secure_url;
+                setUploadedImages((prev) => [...prev, newImageUrl]);
+              } else {
+                toast.error('Fail to upload image');
+              }
             }}
           >
             {({ open }) => {
@@ -181,7 +189,7 @@ const PostTrpPage = () => {
       </Grid>
 
       <Button disabled={isLoading} type="submit">
-        Create....
+        Create
       </Button>
     </PHForm>
   );
