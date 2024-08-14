@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import PHForm from "@/components/Forms/PHForm";
-import PHInput from "@/components/Forms/PHInput";
-import Spinner from "@/components/Shared/Spinner/Spinner";
-import { useGetTripQuery } from "@/redux/api/tripApi";
-import { useCreateTripRequestMutation } from "@/redux/api/tripRequestApi";
-import { useGetMyProfileQuery } from "@/redux/api/userApi";
-import { ErrorResponse, TTrip, TUser } from "@/types";
-import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import TBForm from '@/components/Forms/TBForm';
+import TBInput from '@/components/Forms/TBInput';
+import Spinner from '@/components/Shared/Spinner/Spinner';
+import { useGetTripQuery } from '@/redux/api/tripApi';
+import { useCreateTripRequestMutation } from '@/redux/api/tripRequestApi';
+import { useGetMyProfileQuery } from '@/redux/api/userApi';
+import { ErrorResponse, TTrip, TUser } from '@/types';
+import { Button, Checkbox, FormControlLabel, Grid } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 type TParams = {
   params: {
@@ -46,17 +46,17 @@ const TripRequestPage = ({ params }: TParams) => {
       }).unwrap();
 
       toast.success(res.message);
-      router.push("/dashboard/trip-requested-history");
+      router.push('/dashboard/trip-requested-history');
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
           (acc: string, errorSource: Record<string, any>) =>
-            acc + (acc ? " " : "") + errorSource.message,
-          ""
+            acc + (acc ? ' ' : '') + errorSource.message,
+          ''
         );
         toast.error(errorMessage);
       } else {
-        toast.error("Fail to send request");
+        toast.error('Fail to send request');
       }
     }
   };
@@ -70,10 +70,10 @@ const TripRequestPage = ({ params }: TParams) => {
 
   return (
     <>
-      <PHForm onSubmit={handleTripRequest} defaultValues={{ ...user, ...trip }}>
+      <TBForm onSubmit={handleTripRequest} defaultValues={{ ...user, ...trip }}>
         <Grid container spacing={2} sx={{ my: 5 }}>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="userName"
               label="User Name (You Can't change it)"
               disabled={true}
@@ -82,7 +82,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="email"
               type="email"
               label="Email (You Can't change it)"
@@ -92,7 +92,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="destination"
               label="Destination (You Can't change it)"
               disabled={true}
@@ -101,7 +101,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="description"
               label="Description (You Can't change it)"
               disabled={true}
@@ -110,7 +110,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="startDate"
               label="Start Date (You Can't change it)"
               disabled={true}
@@ -119,7 +119,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="endDate"
               label="End Date (You Can't change it)"
               disabled={true}
@@ -128,7 +128,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="travelType"
               label="Travel Type (You Can't change it)"
               disabled={true}
@@ -137,7 +137,7 @@ const TripRequestPage = ({ params }: TParams) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PHInput
+            <TBInput
               name="budget"
               label="Budget (You Can't change it)"
               disabled={true}
@@ -159,7 +159,7 @@ const TripRequestPage = ({ params }: TParams) => {
         <Button type="submit" disabled={!agreed}>
           Send Request
         </Button>
-      </PHForm>
+      </TBForm>
     </>
   );
 };

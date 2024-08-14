@@ -1,11 +1,11 @@
-import { SxProps, TextField } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
+import { SxProps, TextField } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
 
 type TPHInputProps = {
   name: string;
   label?: string;
   type?: string;
-  size?: "small" | "medium";
+  size?: 'small' | 'medium';
   fullWidth?: boolean;
   sx?: SxProps;
   placeholder?: string;
@@ -13,11 +13,11 @@ type TPHInputProps = {
   disabled?: boolean;
 };
 
-const PHInput = ({
+const TBInput = ({
   name,
   label,
-  type = "text",
-  size = "small",
+  type = 'text',
+  size = 'small',
   fullWidth,
   sx,
   placeholder,
@@ -49,4 +49,4 @@ const PHInput = ({
   );
 };
 
-export default PHInput;
+export default TBInput;

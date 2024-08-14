@@ -1,7 +1,7 @@
 'use client';
 
-import PHForm from '@/components/Forms/PHForm';
-import PHInput from '@/components/Forms/PHInput';
+import TBForm from '@/components/Forms/TBForm';
+import TBInput from '@/components/Forms/TBInput';
 import { baseApi } from '@/redux/api/baseApi';
 import { useAppDispatch } from '@/redux/hooks';
 import { tagTypes } from '@/redux/tag-types';
@@ -59,7 +59,7 @@ const LoginForm = () => {
   };
 
   return (
-    <PHForm
+    <TBForm
       onSubmit={handleLoginSubmit}
       resolver={zodResolver(validationSchema)}
       defaultValues={defaultValues}
@@ -80,10 +80,10 @@ const LoginForm = () => {
       </Box>
       <Grid container spacing={2} my={1}>
         <Grid item md={6}>
-          <PHInput name="email" label="Email" type="email" fullWidth={true} />
+          <TBInput name="email" label="Email" type="email" fullWidth={true} />
         </Grid>
         <Grid item md={6}>
-          <PHInput
+          <TBInput
             name="password"
             label="Password"
             type="password"
@@ -109,7 +109,7 @@ const LoginForm = () => {
         Don&apos;t have an account?
         <Link href="/register">Create an account</Link>
       </Typography>
-    </PHForm>
+    </TBForm>
   );
 };
 

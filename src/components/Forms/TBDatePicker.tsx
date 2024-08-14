@@ -33,6 +33,7 @@ const TBDatePicker = ({
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              format="DD/MM/YYYY"
               label={label}
               disablePast
               timezone="system"

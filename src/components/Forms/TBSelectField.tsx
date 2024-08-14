@@ -1,10 +1,10 @@
-import { MenuItem, SxProps, TextField } from "@mui/material";
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { MenuItem, SxProps, TextField } from '@mui/material';
+import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface ITextField {
   name: string;
-  size?: "small" | "medium";
+  size?: 'small' | 'medium';
   placeholder?: string;
   label?: string;
   required?: boolean;
@@ -13,11 +13,11 @@ interface ITextField {
   items: string[];
 }
 
-const PHSelectField = ({
+const TBSelectField = ({
   items,
   name,
   label,
-  size = "small",
+  size = 'small',
   required,
   fullWidth = true,
   sx,
@@ -42,7 +42,7 @@ const PHSelectField = ({
           fullWidth={fullWidth}
           error={isError}
           helperText={
-            isError ? (formState.errors[name]?.message as string) : ""
+            isError ? (formState.errors[name]?.message as string) : ''
           }
         >
           {items.map((name) => (
@@ -56,4 +56,4 @@ const PHSelectField = ({
   );
 };
 
-export default PHSelectField;
+export default TBSelectField;

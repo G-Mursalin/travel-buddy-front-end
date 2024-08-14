@@ -1,8 +1,8 @@
 'use client';
 
-import PHForm from '@/components/Forms/PHForm';
-import PHInput from '@/components/Forms/PHInput';
-import PHSelectField from '@/components/Forms/PHSelectField';
+import TBForm from '@/components/Forms/TBForm';
+import TBInput from '@/components/Forms/TBInput';
+import TBSelectField from '@/components/Forms/TBSelectField';
 import TBDatePicker from '@/components/Forms/TBDatePicker';
 import { travelType } from '@/constants/trip';
 import { useCreateTripMutation } from '@/redux/api/tripApi';
@@ -25,22 +25,30 @@ import { z } from 'zod';
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const tripValidationSchema = z.object({
-  destination: z.string().min(1, { message: 'Destination cannot be empty' }),
-  description: z.string().min(1, { message: 'Description cannot be empty' }),
-  startDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
-    message: 'Please select startDate',
-  }),
-  endDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
-    message: 'Please select endDate',
-  }),
-  budget: z.string().min(1, { message: 'Budget cannot be empty' }),
-  travelType: z.enum([...travelType] as [string, ...string[]], {
-    required_error: 'Travel Types is required',
-    invalid_type_error:
-      'Travel Types must be one of: adventure or leisure or business',
-  }),
-});
+const tripValidationSchema = z
+  .object({
+    destination: z.string().min(1, { message: 'Destination cannot be empty' }),
+    description: z.string().min(1, { message: 'Description cannot be empty' }),
+    startDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
+      message: 'Please select startDate',
+    }),
+    endDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
+      message: 'Please select endDate',
+    }),
+    budget: z.string().min(1, { message: 'Budget cannot be empty' }),
+    travelType: z.enum([...travelType] as [string, ...string[]], {
+      required_error: 'Travel Types is required',
+      invalid_type_error:
+        'Travel Types must be one of: adventure or leisure or business',
+    }),
+  })
+  .refine(
+    ({ startDate, endDate }) => dayjs(endDate).isAfter(dayjs(startDate)),
+    {
+      message: 'End date must be after the start date',
+      path: ['endDate'],
+    }
+  );
 
 const PostTrpPage = () => {
   const [createTrip, { isLoading }] = useCreateTripMutation();
@@ -85,14 +93,14 @@ const PostTrpPage = () => {
   };
 
   return (
-    <PHForm
+    <TBForm
       onSubmit={handleFormSubmit}
       defaultValues={defaultValues}
       resolver={zodResolver(tripValidationSchema)}
     >
       <Grid container spacing={2} sx={{ my: 5 }}>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="destination"
             label="Destination"
             fullWidth={true}
@@ -100,7 +108,7 @@ const PostTrpPage = () => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="description"
             label="Description"
             fullWidth={true}
@@ -117,7 +125,7 @@ const PostTrpPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="budget"
             type="number"
             label="Budget"
@@ -126,7 +134,7 @@ const PostTrpPage = () => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHSelectField
+          <TBSelectField
             items={travelType}
             name="travelType"
             label="Travel Type"
@@ -169,7 +177,7 @@ const PostTrpPage = () => {
       <Button disabled={isLoading} type="submit">
         Create
       </Button>
-    </PHForm>
+    </TBForm>
   );
 };
 

@@ -1,64 +1,64 @@
-"use client";
+'use client';
 
-import PHForm from "@/components/Forms/PHForm";
-import { useGetTripQuery, useUpdateTripMutation } from "@/redux/api/tripApi";
-import { ErrorResponse, TJwtPayload, TTrip } from "@/types";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { FieldValues } from "react-hook-form";
-import { Button, Grid } from "@mui/material";
-import PHInput from "@/components/Forms/PHInput";
-import PHSelectField from "@/components/Forms/PHSelectField";
-import { travelType } from "@/constants/trip";
-import { toast } from "sonner";
-import { useEffect, useState } from "react";
-import { getUserInfo } from "@/services/auth.services";
-import { USER_ROLE } from "@/constants/role";
-import Spinner from "../Spinner/Spinner";
+import TBForm from '@/components/Forms/TBForm';
+import TBInput from '@/components/Forms/TBInput';
+import TBSelectField from '@/components/Forms/TBSelectField';
+import { useGetTripQuery, useUpdateTripMutation } from '@/redux/api/tripApi';
+import { ErrorResponse, TJwtPayload, TTrip } from '@/types';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { FieldValues } from 'react-hook-form';
+import { Button, Grid } from '@mui/material';
+import { travelType } from '@/constants/trip';
+import { toast } from 'sonner';
+import { useEffect, useState } from 'react';
+import { getUserInfo } from '@/services/auth.services';
+import { USER_ROLE } from '@/constants/role';
+import Spinner from '../Spinner/Spinner';
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const tripValidationSchema = z.object({
-  destination: z.string().min(1, { message: "Destination cannot be empty" }),
-  description: z.string().min(1, { message: "Description cannot be empty" }),
+  destination: z.string().min(1, { message: 'Destination cannot be empty' }),
+  description: z.string().min(1, { message: 'Description cannot be empty' }),
   startDate: z
     .string()
     .regex(dateRegex, {
-      message: "Invalid startDate format. Use YYYY-MM-DD",
+      message: 'Invalid startDate format. Use YYYY-MM-DD',
     })
     .refine(
       (dateString) => {
         const date = new Date(dateString);
         return !isNaN(date.getTime());
       },
-      { message: "Invalid startDate value" }
+      { message: 'Invalid startDate value' }
     ),
   endDate: z
     .string()
     .regex(dateRegex, {
-      message: "Invalid endDate format. Use YYYY-MM-DD",
+      message: 'Invalid endDate format. Use YYYY-MM-DD',
     })
     .refine(
       (dateString) => {
         const date = new Date(dateString);
         return !isNaN(date.getTime());
       },
-      { message: "Invalid endDate value" }
+      { message: 'Invalid endDate value' }
     ),
-  budget: z.string().min(1, { message: "Budget cannot be empty" }),
+  budget: z.string().min(1, { message: 'Budget cannot be empty' }),
   travelType: z.enum([...travelType] as [string, ...string[]], {
-    required_error: "Travel Types is required",
+    required_error: 'Travel Types is required',
     invalid_type_error:
-      "Travel Types must be one of: adventure or leisure or business",
+      'Travel Types must be one of: adventure or leisure or business',
   }),
   photo: z
     .string()
-    .url({ message: "Invalid photo URL" })
-    .min(1, { message: "Photo URL cannot be empty" }),
+    .url({ message: 'Invalid photo URL' })
+    .min(1, { message: 'Photo URL cannot be empty' }),
 });
 
 const EditPost = ({ id }: { id: string }) => {
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState('');
   const { data, isLoading, isFetching, refetch } = useGetTripQuery(id);
   const [updateTrip] = useUpdateTripMutation();
   const router = useRouter();
@@ -76,21 +76,21 @@ const EditPost = ({ id }: { id: string }) => {
 
       // Redirect Users
       if (userRole === USER_ROLE.USER) {
-        router.push("/dashboard/posts");
+        router.push('/dashboard/posts');
       }
       if (userRole === USER_ROLE.ADMIN) {
-        router.push("/dashboard/admin/trip-management");
+        router.push('/dashboard/admin/trip-management');
       }
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
           (acc: string, errorSource: Record<string, any>) =>
-            acc + (acc ? " " : "") + errorSource.message,
-          ""
+            acc + (acc ? ' ' : '') + errorSource.message,
+          ''
         );
         toast.error(errorMessage);
       } else {
-        toast.error("Fail to update");
+        toast.error('Fail to update');
       }
     }
   };
@@ -99,7 +99,7 @@ const EditPost = ({ id }: { id: string }) => {
     const user = getUserInfo() as TJwtPayload;
 
     if (!user) {
-      return router.push("/login");
+      return router.push('/login');
     }
 
     setUserRole(user.role);
@@ -116,14 +116,14 @@ const EditPost = ({ id }: { id: string }) => {
   }
 
   return (
-    <PHForm
+    <TBForm
       onSubmit={handleFormSubmit}
       defaultValues={{ ...trip, budget: String(trip.budget) }}
       resolver={zodResolver(tripValidationSchema)}
     >
       <Grid container spacing={2} sx={{ my: 5 }}>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="destination"
             label="Destination"
             fullWidth={true}
@@ -131,7 +131,7 @@ const EditPost = ({ id }: { id: string }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="description"
             label="Description"
             fullWidth={true}
@@ -140,7 +140,7 @@ const EditPost = ({ id }: { id: string }) => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="startDate"
             label="Start Date"
             fullWidth={true}
@@ -149,7 +149,7 @@ const EditPost = ({ id }: { id: string }) => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="endDate"
             label="End Date"
             fullWidth={true}
@@ -157,7 +157,7 @@ const EditPost = ({ id }: { id: string }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="budget"
             type="number"
             label="Budget"
@@ -166,7 +166,7 @@ const EditPost = ({ id }: { id: string }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHSelectField
+          <TBSelectField
             items={travelType}
             name="travelType"
             label="Travel Type"
@@ -174,7 +174,7 @@ const EditPost = ({ id }: { id: string }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
+          <TBInput
             name="photo"
             label="Photo URL"
             fullWidth={true}
@@ -186,7 +186,7 @@ const EditPost = ({ id }: { id: string }) => {
       <Button disabled={isLoading} type="submit">
         Update
       </Button>
-    </PHForm>
+    </TBForm>
   );
 };
 
