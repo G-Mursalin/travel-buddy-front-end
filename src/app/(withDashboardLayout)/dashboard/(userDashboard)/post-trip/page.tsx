@@ -3,12 +3,15 @@
 import PHForm from '@/components/Forms/PHForm';
 import PHInput from '@/components/Forms/PHInput';
 import PHSelectField from '@/components/Forms/PHSelectField';
+import TBDatePicker from '@/components/Forms/TBDatePicker';
 import { travelType } from '@/constants/trip';
 import { useCreateTripMutation } from '@/redux/api/tripApi';
 import { ErrorResponse } from '@/types';
+import { dateFormatter } from '@/utils/dateFormatter';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, Grid } from '@mui/material';
+import dayjs from 'dayjs';
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
@@ -25,30 +28,12 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const tripValidationSchema = z.object({
   destination: z.string().min(1, { message: 'Destination cannot be empty' }),
   description: z.string().min(1, { message: 'Description cannot be empty' }),
-  startDate: z
-    .string()
-    .regex(dateRegex, {
-      message: 'Invalid startDate format. Use YYYY-MM-DD',
-    })
-    .refine(
-      (dateString) => {
-        const date = new Date(dateString);
-        return !isNaN(date.getTime());
-      },
-      { message: 'Invalid startDate value' }
-    ),
-  endDate: z
-    .string()
-    .regex(dateRegex, {
-      message: 'Invalid endDate format. Use YYYY-MM-DD',
-    })
-    .refine(
-      (dateString) => {
-        const date = new Date(dateString);
-        return !isNaN(date.getTime());
-      },
-      { message: 'Invalid endDate value' }
-    ),
+  startDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
+    message: 'Please select startDate',
+  }),
+  endDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
+    message: 'Please select endDate',
+  }),
   budget: z.string().min(1, { message: 'Budget cannot be empty' }),
   travelType: z.enum([...travelType] as [string, ...string[]], {
     required_error: 'Travel Types is required',
@@ -64,12 +49,14 @@ const PostTrpPage = () => {
 
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
+    // Modified the values as backend accepted
+    values.startDate = dateFormatter(values.startDate);
+    values.endDate = dateFormatter(values.endDate);
+    values.budget = Number(values.budget);
+    values.photos = uploadedImages.map((val, i) => ({ id: i, image: val }));
+
     try {
-      const res = await createTrip({
-        ...values,
-        budget: Number(values.budget),
-        photos: uploadedImages.map((val, i) => ({ id: i, image: val })),
-      }).unwrap();
+      const res = await createTrip(values).unwrap();
       toast.success(res.message);
       router.push('/dashboard/trips');
     } catch (error: ErrorResponse | any) {
@@ -122,22 +109,13 @@ const PostTrpPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
-            name="startDate"
-            label="Start Date"
-            fullWidth={true}
-            sx={{ mb: 2 }}
-          />
+          <TBDatePicker name="startDate" label="Start Date" />
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-          <PHInput
-            name="endDate"
-            label="End Date"
-            fullWidth={true}
-            sx={{ mb: 2 }}
-          />
+          <TBDatePicker name="endDate" label="End Date" />
         </Grid>
+
         <Grid item xs={12} sm={12} md={4}>
           <PHInput
             name="budget"
