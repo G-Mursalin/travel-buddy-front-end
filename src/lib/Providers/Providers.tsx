@@ -1,4 +1,5 @@
 'use client';
+
 import { store } from '@/redux/store';
 import { ThemeProvider } from '@mui/material';
 import { ReactNode } from 'react';

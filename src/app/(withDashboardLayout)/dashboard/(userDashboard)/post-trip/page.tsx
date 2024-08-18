@@ -1,46 +1,57 @@
 'use client';
 
-import TBForm from '@/components/Forms/TBForm';
-import TBInput from '@/components/Forms/TBInput';
-import TBSelectField from '@/components/Forms/TBSelectField';
+import dynamic from 'next/dynamic';
 import TBDatePicker from '@/components/Forms/TBDatePicker';
+import TBForm from '@/components/Forms/TBForm';
+import TBImageUploader from '@/components/Forms/TBImageUploader';
+import TBInput from '@/components/Forms/TBInput';
+// Dynamically import TBRichTextEditor with SSR disabled
+const TBRichTextEditor = dynamic(
+  () => import('@/components/Forms/TBRichTextEditor'),
+  { ssr: false }
+);
+import TBSelectField from '@/components/Forms/TBSelectField';
 import { travelType } from '@/constants/trip';
 import { useCreateTripMutation } from '@/redux/api/tripApi';
 import { ErrorResponse } from '@/types';
 import { dateFormatter } from '@/utils/dateFormatter';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import dayjs from 'dayjs';
-import {
-  CldUploadWidget,
-  CloudinaryUploadWidgetInfo,
-  CloudinaryUploadWidgetResults,
-} from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
+// Zod Schema
 const tripValidationSchema = z
   .object({
     destination: z.string().min(1, { message: 'Destination cannot be empty' }),
     description: z.string().min(1, { message: 'Description cannot be empty' }),
     startDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
-      message: 'Please select startDate',
+      message: 'Please select a valid start date',
     }),
     endDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
-      message: 'Please select endDate',
+      message: 'Please select a valid end date',
     }),
     budget: z.string().min(1, { message: 'Budget cannot be empty' }),
     travelType: z.enum([...travelType] as [string, ...string[]], {
-      required_error: 'Travel Types is required',
+      required_error: 'Travel Type is required',
       invalid_type_error:
-        'Travel Types must be one of: adventure or leisure or business',
+        'Travel Type must be one of: adventure, leisure, or business',
     }),
+    photos: z
+      .array(
+        z.object({
+          id: z
+            .number()
+            .nonnegative({ message: 'ID must be a non-negative number' }),
+          image: z.string().url({ message: 'Invalid image URL' }),
+        })
+      )
+      .max(3, { message: 'You can only upload up to 3 images' })
+      .min(1, { message: 'You must upload at least 1 image' }),
   })
   .refine(
     ({ startDate, endDate }) => dayjs(endDate).isAfter(dayjs(startDate)),
@@ -50,18 +61,18 @@ const tripValidationSchema = z
     }
   );
 
-const PostTrpPage = () => {
+function PostTrpPage() {
   const [createTrip, { isLoading }] = useCreateTripMutation();
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [content, setContent] = useState('');
   const router = useRouter();
 
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
-    // Modified the values as backend accepted
+    // // Modified the values as backend accepted
     values.startDate = dateFormatter(values.startDate);
     values.endDate = dateFormatter(values.endDate);
     values.budget = Number(values.budget);
-    values.photos = uploadedImages.map((val, i) => ({ id: i, image: val }));
 
     try {
       const res = await createTrip(values).unwrap();
@@ -89,7 +100,7 @@ const PostTrpPage = () => {
     endDate: '',
     budget: '',
     travelType: '',
-    photo: [],
+    photos: [],
   };
 
   return (
@@ -98,33 +109,19 @@ const PostTrpPage = () => {
       defaultValues={defaultValues}
       resolver={zodResolver(tripValidationSchema)}
     >
-      <Grid container spacing={2} sx={{ my: 5 }}>
-        <Grid item xs={12} sm={12} md={4}>
+      <Grid container spacing={3} sx={{ my: 5 }}>
+        {/* Destination */}
+        <Grid item xs={12} sm={12} md={6}>
           <TBInput
             name="destination"
-            label="Destination"
-            fullWidth={true}
-            sx={{ mb: 2 }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={4}>
-          <TBInput
-            name="description"
-            label="Description"
+            label="Destination / Location"
             fullWidth={true}
             sx={{ mb: 2 }}
           />
         </Grid>
 
-        <Grid item xs={12} sm={12} md={4}>
-          <TBDatePicker name="startDate" label="Start Date" />
-        </Grid>
-
-        <Grid item xs={12} sm={12} md={4}>
-          <TBDatePicker name="endDate" label="End Date" />
-        </Grid>
-
-        <Grid item xs={12} sm={12} md={4}>
+        {/* Budget */}
+        <Grid item xs={12} sm={6} md={3}>
           <TBInput
             name="budget"
             type="number"
@@ -133,52 +130,59 @@ const PostTrpPage = () => {
             sx={{ mb: 2 }}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4}>
+
+        {/* Travel Types */}
+        <Grid item xs={12} sm={6} md={3}>
           <TBSelectField
             items={travelType}
             name="travelType"
             label="Travel Type"
+            fullWidth={true}
             sx={{ mb: 2 }}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4}>
-          <CldUploadWidget
+
+        {/* Start Date */}
+        <Grid item xs={12} sm={6} md={6}>
+          <TBDatePicker name="startDate" label="Start Date" fullWidth />
+        </Grid>
+
+        {/* End Date */}
+        <Grid item xs={12} sm={6} md={6}>
+          <TBDatePicker name="endDate" label="End Date" fullWidth />
+        </Grid>
+
+        {/* Description */}
+        <Grid item xs={12}>
+          <TBRichTextEditor
+            name="description"
+            placeholder="Enter trip description here..."
+            required={true}
+          />
+        </Grid>
+
+        {/* Upload Images */}
+        <Grid item xs={12} md={6}>
+          <TBImageUploader
+            name="photos"
             uploadPreset="travel_buddy"
-            onSuccess={(result: CloudinaryUploadWidgetResults) => {
-              if (result.info && typeof result.info !== 'string') {
-                const info: CloudinaryUploadWidgetInfo = result.info;
-                const newImageUrl = info.secure_url;
-                setUploadedImages((prev) => [...prev, newImageUrl]);
-              } else {
-                toast.error('Fail to upload image');
-              }
-            }}
-          >
-            {({ open }) => {
-              function handleOnClick() {
-                open();
-              }
-              return (
-                <Button
-                  onClick={handleOnClick}
-                  component="label"
-                  variant="contained"
-                  tabIndex={-1}
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Upload Images
-                </Button>
-              );
-            }}
-          </CldUploadWidget>
+            label="Upload Trip Images"
+            fullWidth
+            maxUploads={3}
+          />
+        </Grid>
+
+        {/* Create Button */}
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="flex-end">
+            <Button disabled={isLoading} type="submit">
+              Create
+            </Button>
+          </Box>
         </Grid>
       </Grid>
-
-      <Button disabled={isLoading} type="submit">
-        Create
-      </Button>
     </TBForm>
   );
-};
+}
 
 export default PostTrpPage;
