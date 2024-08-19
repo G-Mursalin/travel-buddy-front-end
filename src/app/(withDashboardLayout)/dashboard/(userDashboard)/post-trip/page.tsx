@@ -14,7 +14,7 @@ import TBSelectField from '@/components/Forms/TBSelectField';
 import { travelType } from '@/constants/trip';
 import { useCreateTripMutation } from '@/redux/api/tripApi';
 import { ErrorResponse } from '@/types';
-import { dateFormatter } from '@/utils/dateFormatter';
+import { dateTimeUtils } from '@/utils/dateTimeUtils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid } from '@mui/material';
 import dayjs from 'dayjs';
@@ -70,8 +70,8 @@ function PostTrpPage() {
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
     // // Modified the values as backend accepted
-    values.startDate = dateFormatter(values.startDate);
-    values.endDate = dateFormatter(values.endDate);
+    values.startDate = dateTimeUtils.dateFormatter(values.startDate);
+    values.endDate = dateTimeUtils.dateFormatter(values.endDate);
     values.budget = Number(values.budget);
 
     try {
