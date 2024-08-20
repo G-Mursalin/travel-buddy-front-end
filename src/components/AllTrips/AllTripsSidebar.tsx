@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const AllTripsSidebar = ({ filters, handleFilterChange }: any) => {
+const AllTripsSidebar = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -21,8 +21,8 @@ const AllTripsSidebar = ({ filters, handleFilterChange }: any) => {
             key={type}
             control={
               <Checkbox
-                checked={filters.travelType.includes(type)}
-                onChange={() => handleFilterChange('travelType', type)}
+              // checked={filters.travelType.includes(type)}
+              // onChange={() => handleFilterChange('travelType', type)}
               />
             }
             label={type}
@@ -38,8 +38,8 @@ const AllTripsSidebar = ({ filters, handleFilterChange }: any) => {
             key={range}
             control={
               <Checkbox
-                checked={filters.priceRange.includes(range)}
-                onChange={() => handleFilterChange('priceRange', range)}
+              // checked={filters.priceRange.includes(range)}
+              // onChange={() => handleFilterChange('priceRange', range)}
               />
             }
             label={range}

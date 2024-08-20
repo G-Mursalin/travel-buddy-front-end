@@ -1,8 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { baseApi } from "./api/baseApi";
+import { configureStore } from '@reduxjs/toolkit';
+import tripReducer from './features/trip/tripSlice';
+import { baseApi } from './api/baseApi';
 
 export const store = configureStore({
   reducer: {
+    trip: tripReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
 
