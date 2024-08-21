@@ -1,3 +1,8 @@
+'use client';
+
+import { travelPriceRange } from '@/constants/travelPriceRange';
+import { travelTypes } from '@/constants/travelTypes';
+import { extractPriceRange } from '@/utils/extractPriceRange';
 import {
   Box,
   Checkbox,
@@ -5,8 +10,52 @@ import {
   FormGroup,
   Typography,
 } from '@mui/material';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const AllTripsSidebar = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleFilterChange = (query: string, value: string) => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    if (query === 'travelType') {
+      currentParams.set(query, value);
+    } else {
+      const { min, max } = extractPriceRange(value);
+      currentParams.set('minPrice', min?.toString() || '');
+      currentParams.set('maxPrice', max?.toString() || '');
+    }
+
+    // Remove empty params
+    const paramsToDelete: string[] = [];
+    currentParams.forEach((value, key) => {
+      if (!value) paramsToDelete.push(key);
+    });
+    paramsToDelete.forEach((key) => currentParams.delete(key));
+
+    router.push(`/all-trip?${currentParams.toString()}`);
+  };
+
+  const isPriceRangeChecked = (range: string): boolean => {
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+
+    if (!minPrice && !maxPrice) return false;
+
+    const { min, max } = extractPriceRange(range);
+
+    if (min === null || max === null) {
+      // Handle the case for '$1,500+' or similar
+      return minPrice === min?.toString();
+    }
+
+    return (
+      minPrice === min.toString() &&
+      (maxPrice === max.toString() || maxPrice === null)
+    );
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -16,13 +65,14 @@ const AllTripsSidebar = () => {
         <Typography variant="subtitle1" gutterBottom>
           Travel Type
         </Typography>
-        {['Adventure', 'Relaxation', 'Cultural', 'Family'].map((type) => (
+        {travelTypes.map((type: string) => (
           <FormControlLabel
+            value={searchParams.get('travelType')}
             key={type}
             control={
               <Checkbox
-              // checked={filters.travelType.includes(type)}
-              // onChange={() => handleFilterChange('travelType', type)}
+                checked={type === searchParams.get('travelType') ? true : false}
+                onChange={() => handleFilterChange('travelType', type)}
               />
             }
             label={type}
@@ -33,13 +83,14 @@ const AllTripsSidebar = () => {
         <Typography variant="subtitle1" gutterBottom>
           Price Range
         </Typography>
-        {['$0 - $500', '$500 - $1,000', '$1,000+'].map((range) => (
+        {travelPriceRange.map((range, i) => (
           <FormControlLabel
-            key={range}
+            value={searchParams.get('priceRange')}
+            key={i}
             control={
               <Checkbox
-              // checked={filters.priceRange.includes(range)}
-              // onChange={() => handleFilterChange('priceRange', range)}
+                checked={isPriceRangeChecked(range)}
+                onChange={() => handleFilterChange('priceRange', range)}
               />
             }
             label={range}

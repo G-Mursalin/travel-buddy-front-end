@@ -11,7 +11,7 @@ const TBRichTextEditor = dynamic(
   { ssr: false }
 );
 import TBSelectField from '@/components/Forms/TBSelectField';
-import { travelType } from '@/constants/trip';
+import { travelTypes } from '@/constants/travelTypes';
 import { useCreateTripMutation } from '@/redux/api/tripApi';
 import { ErrorResponse } from '@/types';
 import { dateTimeUtils } from '@/utils/dateTimeUtils';
@@ -36,10 +36,10 @@ const tripValidationSchema = z
       message: 'Please select a valid end date',
     }),
     budget: z.string().min(1, { message: 'Budget cannot be empty' }),
-    travelType: z.enum([...travelType] as [string, ...string[]], {
+    travelType: z.enum([...travelTypes] as [string, ...string[]], {
       required_error: 'Travel Type is required',
       invalid_type_error:
-        'Travel Type must be one of: adventure, leisure, or business',
+        'Travel Types must be one of: Adventure or Relaxation or Cultural or Family or Business',
     }),
     photos: z
       .array(
@@ -134,7 +134,7 @@ function PostTrpPage() {
         {/* Travel Types */}
         <Grid item xs={12} sm={6} md={3}>
           <TBSelectField
-            items={travelType}
+            items={travelTypes}
             name="travelType"
             label="Travel Type"
             fullWidth={true}

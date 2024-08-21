@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { FieldValues } from 'react-hook-form';
 import { Button, Grid } from '@mui/material';
-import { travelType } from '@/constants/trip';
+import { travelTypes } from '@/constants/travelTypes';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { getUserInfo } from '@/services/auth.services';
@@ -46,7 +46,7 @@ const tripValidationSchema = z.object({
       { message: 'Invalid endDate value' }
     ),
   budget: z.string().min(1, { message: 'Budget cannot be empty' }),
-  travelType: z.enum([...travelType] as [string, ...string[]], {
+  travelType: z.enum([...travelTypes] as [string, ...string[]], {
     required_error: 'Travel Types is required',
     invalid_type_error:
       'Travel Types must be one of: adventure or leisure or business',
@@ -167,7 +167,7 @@ const EditPost = ({ id }: { id: string }) => {
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <TBSelectField
-            items={travelType}
+            items={travelTypes}
             name="travelType"
             label="Travel Type"
             sx={{ mb: 2 }}

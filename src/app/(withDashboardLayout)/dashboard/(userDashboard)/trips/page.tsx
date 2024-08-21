@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Spinner from "@/components/Shared/Spinner/Spinner";
-import { travelType } from "@/constants/trip";
-import { useGetAllTripsQuery } from "@/redux/api/tripApi";
-import { TTrip } from "@/types";
+import Spinner from '@/components/Shared/Spinner/Spinner';
+import { travelTypes } from '@/constants/travelTypes';
+import { useGetAllTripsQuery } from '@/redux/api/tripApi';
+import { TTrip } from '@/types';
 import {
   Box,
   Button,
@@ -19,16 +19,16 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import Link from "next/link";
-import { ChangeEvent, useState } from "react";
+} from '@mui/material';
+import { styled } from '@mui/system';
+import Link from 'next/link';
+import { ChangeEvent, useState } from 'react';
 
 const TravelCard = styled(Card)({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  height: "100%",
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100%',
 });
 
 const TripsPage = () => {
@@ -36,13 +36,13 @@ const TripsPage = () => {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTravelType, setSelectedTravelType] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTravelType, setSelectedTravelType] = useState('');
 
-  query["page"] = page;
-  query["limit"] = limit;
-  query["searchTerm"] = searchTerm;
-  if (selectedTravelType) query["travelType"] = selectedTravelType;
+  query['page'] = page;
+  query['limit'] = limit;
+  query['searchTerm'] = searchTerm;
+  if (selectedTravelType) query['travelType'] = selectedTravelType;
 
   const {
     data: trips,
@@ -98,7 +98,7 @@ const TripsPage = () => {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {travelType.map((type: string) => (
+              {travelTypes.map((type: string) => (
                 <MenuItem key={type} value={type}>
                   {type}
                 </MenuItem>
@@ -152,7 +152,7 @@ const TripsPage = () => {
         ))}
       </Grid>
       {/* Pagination */}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
         <Pagination
           count={meta?.totalPage}
           page={page}
