@@ -29,8 +29,8 @@ const pages = [
   },
   {
     id: '3',
-    path: '/all-trips',
-    label: 'All Trips',
+    path: '/all-trip',
+    label: 'All Trip',
   },
 ];
 

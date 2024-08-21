@@ -1,26 +1,14 @@
+import { tripApi } from '@/api/tripApi';
 import AllTripsDrawer from '@/components/AllTrips/AllTripsDrawer';
 import AllTripsPagination from '@/components/AllTrips/AllTripsPagination';
 import AllTripsSearchBox from '@/components/AllTrips/AllTripsSearchBox';
 import AllTripsSidebar from '@/components/AllTrips/AllTripsSidebar';
 import DrawerOpenButton from '@/components/AllTrips/DrawerOpenButton';
 import TripCard from '@/components/AllTrips/TripCard';
-import { dateTimeUtils } from '@/utils/dateTimeUtils';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Typography,
-} from '@mui/material';
-import Link from 'next/link';
+import { Box, Container, Grid } from '@mui/material';
 
 const AllTripsPage = async ({ searchParams }: any) => {
-  let res = await fetch('http://localhost:5000/api/v1/trip');
-
-  const { data: trips } = await res.json();
+  const { data: trips } = await tripApi.getTrips();
 
   return (
     <Container>

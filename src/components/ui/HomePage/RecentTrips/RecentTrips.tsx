@@ -1,4 +1,4 @@
-import { getRecentTrips } from '@/utils/getRecentTrips';
+import { tripApi } from '@/api/tripApi';
 import { TTrip } from '@/types';
 import {
   Box,
@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 
 const RecentTrips = async () => {
-  const { data: trips } = await getRecentTrips();
+  const { data: trips } = await tripApi.getRecentTrips();
 
   return (
     <Box sx={{ flexGrow: 1, padding: 3 }}>
