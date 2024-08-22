@@ -7,8 +7,18 @@ import DrawerOpenButton from '@/components/AllTrips/DrawerOpenButton';
 import TripCard from '@/components/AllTrips/TripCard';
 import { Box, Container, Grid } from '@mui/material';
 
-const AllTripsPage = async ({ searchParams }: any) => {
-  const { data: trips } = await tripApi.getTrips();
+export type TQuery = {
+  travelType: string;
+  minPrice: string;
+  maxPrice: string;
+};
+
+type TAllTripsPage = {
+  searchParams: TQuery;
+};
+
+const AllTripsPage = async ({ searchParams }: TAllTripsPage) => {
+  const { meta, data: trips } = await tripApi.getTrips(searchParams);
 
   return (
     <Container>
@@ -67,7 +77,7 @@ const AllTripsPage = async ({ searchParams }: any) => {
               ))}
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-              <AllTripsPagination />
+              <AllTripsPagination metaData={meta} />
             </Box>
           </Box>
         </Box>

@@ -27,6 +27,9 @@ const AllTripsSearchBox = () => {
   const updateSearchParam = (value: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
 
+    // Remove the 'page' parameter
+    currentParams.delete('page');
+
     if (value) {
       currentParams.set('searchTerm', value);
     } else {

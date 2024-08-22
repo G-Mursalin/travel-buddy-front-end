@@ -5,6 +5,7 @@ import { travelTypes } from '@/constants/travelTypes';
 import { extractPriceRange } from '@/utils/extractPriceRange';
 import {
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -18,6 +19,9 @@ const AllTripsSidebar = () => {
 
   const handleFilterChange = (query: string, value: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
+
+    // Remove the 'page' parameter
+    currentParams.delete('page');
 
     if (query === 'travelType') {
       currentParams.set(query, value);
@@ -97,6 +101,14 @@ const AllTripsSidebar = () => {
           />
         ))}
       </FormGroup>
+      <Button
+        sx={{ fontSize: '10px', marginTop: '8px' }}
+        onClick={() => {
+          router.push('/all-trip');
+        }}
+      >
+        Clear Filters
+      </Button>
     </Box>
   );
 };

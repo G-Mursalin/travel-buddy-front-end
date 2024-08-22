@@ -1,14 +1,13 @@
-import { USER_ROLE } from "@/constants/role";
-import { DrawerItem, UserRole } from "@/types";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import KeyIcon from "@mui/icons-material/Key";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Person2Icon from "@mui/icons-material/Person2";
-import LuggageIcon from "@mui/icons-material/Luggage";
-import HistoryIcon from "@mui/icons-material/History";
-import AllInboxIcon from "@mui/icons-material/AllInbox";
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import { USER_ROLE } from '@/constants/role';
+import { DrawerItem, UserRole } from '@/types';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HistoryIcon from '@mui/icons-material/History';
+import KeyIcon from '@mui/icons-material/Key';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import Person2Icon from '@mui/icons-material/Person2';
 
 export const dashboardSidebarLinksGenerator = (
   role: UserRole
@@ -17,13 +16,13 @@ export const dashboardSidebarLinksGenerator = (
 
   const defaultMenus = [
     {
-      title: "Change Password",
-      path: "change-password",
+      title: 'Change Password',
+      path: 'change-password',
       icon: KeyIcon,
     },
     {
-      title: "My Profile",
-      path: "my-profile",
+      title: 'My Profile',
+      path: 'my-profile',
       icon: Person2Icon,
     },
   ];
@@ -32,17 +31,17 @@ export const dashboardSidebarLinksGenerator = (
     case USER_ROLE.ADMIN:
       roleMenus.push(
         {
-          title: "Dashboard",
+          title: 'Dashboard',
           path: `${role}`,
           icon: DashboardIcon,
         },
         {
-          title: "User Management",
+          title: 'User Management',
           path: `${role}/user-management`,
           icon: ManageAccountsIcon,
         },
         {
-          title: "Trip Management",
+          title: 'Trip Management',
           path: `${role}/trip-management`,
           icon: ManageSearchIcon,
         }
@@ -52,28 +51,23 @@ export const dashboardSidebarLinksGenerator = (
     case USER_ROLE.USER:
       roleMenus.push(
         {
-          title: "Dashboard",
-          path: "/",
+          title: 'Dashboard',
+          path: '/',
           icon: DashboardIcon,
         },
         {
-          title: "Post A Trip",
+          title: 'Post A Trip',
           path: `post-trip`,
           icon: CalendarMonthIcon,
         },
         {
-          title: "Your Posts",
+          title: 'Your Posts',
           path: `posts`,
           icon: AllInboxIcon,
         },
         {
-          title: "Trips",
-          path: "trips",
-          icon: LuggageIcon,
-        },
-        {
-          title: "Trips History",
-          path: "trip-requested-history",
+          title: 'Trips History',
+          path: 'trip-requested-history',
           icon: HistoryIcon,
         }
       );

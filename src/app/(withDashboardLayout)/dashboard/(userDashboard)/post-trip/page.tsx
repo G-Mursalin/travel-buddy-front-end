@@ -77,7 +77,7 @@ function PostTrpPage() {
     try {
       const res = await createTrip(values).unwrap();
       toast.success(res.message);
-      router.push('/dashboard/trips');
+      router.push('/all-trip');
     } catch (error: ErrorResponse | any) {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
