@@ -3,10 +3,11 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Typography,
+  Box,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const TripCard = ({ trip }: any) => {
@@ -19,46 +20,57 @@ const TripCard = ({ trip }: any) => {
           height: '100%',
         }}
       >
-        <CardMedia
-          component="img"
-          sx={{
-            height: '200px',
-            width: '100%',
-            objectFit: 'cover',
-            margin: 'auto',
-          }}
-          image={trip.photos[0]?.image}
-          alt={trip.destination}
-        />
-        <CardContent sx={{ flexGrow: 1 }}>
+        <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+          <Image
+            src={trip.photos[0]?.image}
+            alt={trip.destination}
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
+
+        <CardContent
+          sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}
+        >
           <Typography
             gutterBottom
             component="div"
             sx={{
               fontSize: { xs: '1.1rem', sm: '1.3rem' },
               fontWeight: 'bold',
+              mb: 2,
             }}
           >
             {trip.destination}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {dateTimeUtils.calculateNights(trip.startDate, trip.endDate)} nights
-            • ${trip.budget}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              {dateTimeUtils.calculateNights(trip.startDate, trip.endDate)}{' '}
+              nights
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              ${trip.budget}
+            </Typography>
+          </Box>
+
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {trip.travelType}
           </Typography>
-          <Button
-            variant="contained"
-            component={Link}
-            href={`/trips/${trip._id}`}
-            sx={{
-              mt: 2,
-              fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-            }}
-          >
-            View
-          </Button>
+
+          <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              component={Link}
+              href={`/trip/${trip._id}`}
+              sx={{
+                fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+              }}
+            >
+              View
+            </Button>
+          </Box>
         </CardContent>
       </Card>
     </Grid>
