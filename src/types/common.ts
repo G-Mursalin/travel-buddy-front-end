@@ -1,13 +1,13 @@
-import { SvgIconTypeMap } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-export type UserRole = "admin" | "user";
+export type UserRole = 'admin' | 'user';
 
 export interface DrawerItem {
   title: string;
   path: string;
   parentPath?: string;
-  icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
+  icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & { muiName: string };
   child?: DrawerItem[];
 }
 
@@ -44,8 +44,13 @@ export type TUser = {
   _id: string;
   userName: string;
   email: string;
-  status: "in-progress" | "blocked";
+  status: 'in-progress' | 'blocked';
   role: UserRole;
+};
+
+export type TPhoto = {
+  id: number;
+  image: string;
 };
 
 export type TTrip = {
@@ -55,6 +60,7 @@ export type TTrip = {
   startDate: string;
   endDate: string;
   budget: number;
-  travelType: "adventure" | "leisure" | "business";
-  photo: string;
+  travelType: 'Adventure' | 'Relaxation' | 'Cultural' | 'Family' | 'Business';
+  photos: TPhoto[];
+  user: TUser;
 };

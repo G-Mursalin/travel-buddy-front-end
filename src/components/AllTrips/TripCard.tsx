@@ -1,3 +1,4 @@
+import { TTrip } from '@/types';
 import { dateTimeUtils } from '@/utils/dateTimeUtils';
 import {
   Button,
@@ -10,7 +11,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-const TripCard = ({ trip }: any) => {
+const TripCard = ({ trip }: { trip: TTrip }) => {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Card

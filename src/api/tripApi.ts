@@ -2,7 +2,9 @@ import { TQuery } from '@/app/(withCommonLayout)/all-trip/page';
 
 const getRecentTrips = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL as string}/trip?page=1&limit=8`,
+    `${
+      process.env.NEXT_PUBLIC_BACKEND_URL as string
+    }/trip?sort=-createdAt&page=1&limit=8&fields=destination,startDate,endDate,budget,travelType,photos`,
     {
       cache: 'no-store',
     }
@@ -24,6 +26,12 @@ const getTrips = async (query: TQuery) => {
       searchParams.append(key, value.toString());
     }
   });
+
+  searchParams.append('sort', '-createdAt');
+  searchParams.append(
+    'fields',
+    'destination,startDate,endDate,budget,travelType,photos'
+  );
 
   const queryString = searchParams.toString();
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL as string}/trip${

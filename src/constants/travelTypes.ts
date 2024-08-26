@@ -4,4 +4,4 @@ export const travelTypes: string[] = [
   'Cultural',
   'Family',
   'Business',
-];
+] as const;

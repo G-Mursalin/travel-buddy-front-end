@@ -12,12 +12,22 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 const AllTripsSidebar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [selectedTravelType, setSelectedTravelType] = useState('');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('');
 
   const handleFilterChange = (query: string, value: string) => {
+    // Set To State
+    if (query === 'travelType') {
+      setSelectedTravelType(value);
+    } else if (query === 'priceRange') {
+      setSelectedPriceRange(value);
+    }
+
     const currentParams = new URLSearchParams(searchParams.toString());
 
     // Remove the 'page' parameter
@@ -25,7 +35,7 @@ const AllTripsSidebar = () => {
 
     if (query === 'travelType') {
       currentParams.set(query, value);
-    } else {
+    } else if (query === 'priceRange') {
       const { min, max } = extractPriceRange(value);
       currentParams.set('minPrice', min?.toString() || '');
       currentParams.set('maxPrice', max?.toString() || '');
@@ -39,25 +49,6 @@ const AllTripsSidebar = () => {
     paramsToDelete.forEach((key) => currentParams.delete(key));
 
     router.push(`/all-trip?${currentParams.toString()}`);
-  };
-
-  const isPriceRangeChecked = (range: string): boolean => {
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
-
-    if (!minPrice && !maxPrice) return false;
-
-    const { min, max } = extractPriceRange(range);
-
-    if (min === null || max === null) {
-      // Handle the case for '$1,500+' or similar
-      return minPrice === min?.toString();
-    }
-
-    return (
-      minPrice === min.toString() &&
-      (maxPrice === max.toString() || maxPrice === null)
-    );
   };
 
   return (
@@ -75,7 +66,7 @@ const AllTripsSidebar = () => {
             key={type}
             control={
               <Checkbox
-                checked={type === searchParams.get('travelType') ? true : false}
+                checked={type === selectedTravelType}
                 onChange={() => handleFilterChange('travelType', type)}
               />
             }
@@ -93,7 +84,7 @@ const AllTripsSidebar = () => {
             key={i}
             control={
               <Checkbox
-                checked={isPriceRangeChecked(range)}
+                checked={range === selectedPriceRange}
                 onChange={() => handleFilterChange('priceRange', range)}
               />
             }
@@ -104,6 +95,8 @@ const AllTripsSidebar = () => {
       <Button
         sx={{ fontSize: '10px', marginTop: '8px' }}
         onClick={() => {
+          setSelectedTravelType('');
+          setSelectedPriceRange('');
           router.push('/all-trip');
         }}
       >

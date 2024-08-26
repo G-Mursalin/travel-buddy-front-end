@@ -5,6 +5,7 @@ import AllTripsSearchBox from '@/components/AllTrips/AllTripsSearchBox';
 import AllTripsSidebar from '@/components/AllTrips/AllTripsSidebar';
 import DrawerOpenButton from '@/components/AllTrips/DrawerOpenButton';
 import TripCard from '@/components/AllTrips/TripCard';
+import { TTrip } from '@/types';
 import { Box, Container, Grid } from '@mui/material';
 
 export type TQuery = {
@@ -72,7 +73,7 @@ const AllTripsPage = async ({ searchParams }: TAllTripsPage) => {
             </Box>
             <Grid container spacing={3}>
               {/* Card */}
-              {trips?.map((trip: any) => (
+              {trips?.map((trip: TTrip) => (
                 <TripCard key={trip._id} trip={trip} />
               ))}
             </Grid>

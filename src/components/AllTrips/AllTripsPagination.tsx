@@ -2,7 +2,7 @@
 
 import { Pagination } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type TAllTripsPaginationProps = {
   metaData: { page: string; limit: string; total: string; totalPage: string };

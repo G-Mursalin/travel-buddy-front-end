@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import Spinner from "@/components/Shared/Spinner/Spinner";
+import Spinner from '@/components/Shared/Spinner/Spinner';
 import {
   useDeleteTripMutation,
   useGetLoginUserTripsQuery,
-} from "@/redux/api/tripApi";
-import { ErrorResponse, TTrip } from "@/types";
-import { Box, Button } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+} from '@/redux/api/tripApi';
+import { ErrorResponse, TTrip } from '@/types';
+import { Box, Button } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 type TRow = {
   id: string;
@@ -42,12 +42,12 @@ const PostsPage = () => {
       if (error.data) {
         const errorMessage: string = error.data.errorSources.reduce(
           (acc: string, errorSource: Record<string, any>) =>
-            acc + (acc ? " " : "") + errorSource.message,
-          ""
+            acc + (acc ? ' ' : '') + errorSource.message,
+          ''
         );
         toast.error(errorMessage);
       } else {
-        toast.error("Fail to delete");
+        toast.error('Fail to delete');
       }
     }
   };
@@ -56,7 +56,7 @@ const PostsPage = () => {
     const updateData = trips?.map((data: TTrip) => {
       return {
         id: data._id,
-        photo: data.photo,
+        photo: data.photos[0].image,
         destination: data.destination,
         description: data.description,
         startDate: data.startDate,
@@ -71,8 +71,8 @@ const PostsPage = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "image",
-      headerName: "Image",
+      field: 'image',
+      headerName: 'Image',
       flex: 1,
       renderCell: ({ row }) => {
         return (
@@ -82,24 +82,24 @@ const PostsPage = () => {
               width={65}
               height={65}
               alt={`${row.id}-image`}
-              style={{ borderRadius: "50%" }}
+              style={{ borderRadius: '50%' }}
             />
           </Box>
         );
       },
     },
-    { field: "destination", headerName: "Destination", flex: 1 },
-    { field: "description", headerName: "Description", flex: 1 },
-    { field: "startDate", headerName: "Start Date", flex: 1 },
-    { field: "endDate", headerName: "End Date", flex: 1 },
-    { field: "travelType", headerName: "Travel Type", flex: 1 },
-    { field: "budget", headerName: "Budget", flex: 1 },
+    { field: 'destination', headerName: 'Destination', flex: 1 },
+    { field: 'description', headerName: 'Description', flex: 1 },
+    { field: 'startDate', headerName: 'Start Date', flex: 1 },
+    { field: 'endDate', headerName: 'End Date', flex: 1 },
+    { field: 'travelType', headerName: 'Travel Type', flex: 1 },
+    { field: 'budget', headerName: 'Budget', flex: 1 },
     {
-      field: "change-role",
-      headerName: "Change Role",
+      field: 'change-role',
+      headerName: 'Change Role',
       flex: 1,
-      headerAlign: "center",
-      align: "center",
+      headerAlign: 'center',
+      align: 'center',
       renderCell: ({ row }) => {
         return (
           <Box>
@@ -116,11 +116,11 @@ const PostsPage = () => {
       },
     },
     {
-      field: "change-status",
-      headerName: "Delete Post",
+      field: 'change-status',
+      headerName: 'Delete Post',
       flex: 1,
-      headerAlign: "center",
-      align: "center",
+      headerAlign: 'center',
+      align: 'center',
       renderCell: ({ row }) => {
         return (
           <Box>

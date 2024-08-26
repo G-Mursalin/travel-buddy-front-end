@@ -1,9 +1,9 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-import Link from "next/link";
+import { Box, Container, Grid, Typography } from '@mui/material';
+import Link from 'next/link';
 
 const AboutUsPage = () => {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Box my={4}>
         <Typography variant="h3" component="h1" gutterBottom>
           About Us
