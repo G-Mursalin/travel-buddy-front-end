@@ -44,6 +44,8 @@ export type TUser = {
   _id: string;
   userName: string;
   email: string;
+  profileImage: string;
+  bio: string;
   status: 'in-progress' | 'blocked';
   role: UserRole;
 };

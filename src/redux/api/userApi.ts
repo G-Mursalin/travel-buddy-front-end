@@ -1,5 +1,5 @@
-import { baseApi } from "./baseApi";
-import { tagTypes } from "../tag-types";
+import { baseApi } from './baseApi';
+import { tagTypes } from '../tag-types';
 
 export const profileAPi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -7,8 +7,8 @@ export const profileAPi = baseApi.injectEndpoints({
     getMyProfile: build.query({
       query: () => {
         return {
-          url: "/user/get-me",
-          method: "GET",
+          url: '/user/get-me',
+          method: 'GET',
         };
       },
       providesTags: [tagTypes.user],
@@ -16,10 +16,10 @@ export const profileAPi = baseApi.injectEndpoints({
 
     // Update My Profile
     updateMyProfile: build.mutation({
-      query: ({ id, data }) => {
+      query: ({ data }) => {
         return {
-          url: `/user/${id}`,
-          method: "PATCH",
+          url: `/user/update-me`,
+          method: 'PATCH',
           body: { ...data },
         };
       },

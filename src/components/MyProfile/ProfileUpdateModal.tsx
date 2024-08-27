@@ -28,7 +28,7 @@ const ProfileUpdateModal = ({ open, setOpen, data }: TProps) => {
   const handleUpdateProfile = async (values: FieldValues) => {
     const { userName } = values;
 
-    updateMyProfile({ id: data._id, data: { userName } });
+    updateMyProfile({ data: { userName } });
 
     setOpen(false);
   };
