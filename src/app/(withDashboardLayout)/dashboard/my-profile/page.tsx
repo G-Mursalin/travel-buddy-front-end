@@ -4,10 +4,8 @@ import ProfileUpdateModal from '@/components/MyProfile/ProfileUpdateModal';
 import UserProfileInformation from '@/components/MyProfile/UserProfileInformation';
 import Spinner from '@/components/Shared/Spinner/Spinner';
 import { useGetMyProfileQuery } from '@/redux/api/userApi';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import Link from 'next/link';
 import { useState } from 'react';
 
 const MyProfilePage = () => {
@@ -36,15 +34,6 @@ const MyProfilePage = () => {
               />
             </Grid>
           </Grid>
-          {/* <Box>
-            <Button
-              sx={{ marginTop: '20px' }}
-              endIcon={<ModeEditIcon />}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Edit Profile
-            </Button>
-          </Box> */}
         </Container>
       ) : (
         <Spinner />

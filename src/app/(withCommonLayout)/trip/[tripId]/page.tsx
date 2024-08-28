@@ -145,14 +145,14 @@ const TripPage = async ({ params }: TTripPageProps) => {
                 </Typography>
                 <Box display="flex" alignItems="center" mb={2}>
                   <Avatar
-                    src="/path-to-host-image.jpg"
+                    src={user.profileImage}
                     alt="Host Name"
                     sx={{ width: 64, height: 64 }}
                   />
                   <Box ml={2}>
                     <Typography variant="h6">{user?.userName}</Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Passionate traveler, writer, blogger
+                      {user?.bio}
                     </Typography>
                     <Link href="#" underline="always" color="primary">
                       View profile

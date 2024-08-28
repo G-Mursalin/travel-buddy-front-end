@@ -21,7 +21,7 @@ import {
 import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'sonner';
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+export const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   margin: theme.spacing(2, 0),
   background: '#f4f7fe',
