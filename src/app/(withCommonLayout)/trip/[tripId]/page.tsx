@@ -43,17 +43,20 @@ const TripPage = async ({ params }: TTripPageProps) => {
         <Grid item xs={12} md={8}>
           <Box sx={{ position: 'sticky', top: 20 }}>
             <Typography variant="h4" component="h1" gutterBottom>
-              {trip?.destination}
+              {trip?.title}
             </Typography>
             <Box display="flex" alignItems="center" mb={2}>
               <LocationOnIcon color="action" />
               <Typography variant="subtitle1" color="textSecondary" ml={1}>
-                Southern Europe
+                {trip?.destination}
               </Typography>
             </Box>
             <Box display="flex" flexWrap="wrap" gap={2} mb={3}>
               <Chip icon={<CalendarTodayIcon />} label={`${nights} nights`} />
-              <Chip icon={<GroupIcon />} label="2 - 4 Mates" />
+              <Chip
+                icon={<GroupIcon />}
+                label={`Max ${trip.maxNumberOfPeople} Mates`}
+              />
               <Chip icon={<PublicIcon />} label={trip?.travelType} />
             </Box>
             <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
@@ -133,7 +136,8 @@ const TripPage = async ({ params }: TTripPageProps) => {
                   align="center"
                   mt={1}
                 >
-                  {10} spots left
+                  {trip?.numberOfBookingSpot}{' '}
+                  {trip?.numberOfBookingSpot > 1 ? 'spots' : 'spot'} left
                 </Typography>
               </CardContent>
             </Card>

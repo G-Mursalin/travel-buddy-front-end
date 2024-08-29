@@ -57,10 +57,13 @@ export type TPhoto = {
 
 export type TTrip = {
   _id: string;
+  title: string;
   destination: string;
   description: string;
   startDate: string;
   endDate: string;
+  maxNumberOfPeople: number;
+  numberOfBookingSpot: number;
   budget: number;
   travelType: 'Adventure' | 'Relaxation' | 'Cultural' | 'Family' | 'Business';
   photos: TPhoto[];

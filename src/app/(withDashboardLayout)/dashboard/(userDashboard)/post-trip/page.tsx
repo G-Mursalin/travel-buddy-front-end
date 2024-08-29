@@ -27,7 +27,14 @@ import { z } from 'zod';
 // Zod Schema
 const tripValidationSchema = z
   .object({
-    destination: z.string().min(1, { message: 'Destination cannot be empty' }),
+    title: z
+      .string()
+      .min(1, { message: 'Title cannot be empty' })
+      .max(50, { message: 'Title must be at most 50 characters long' }),
+    destination: z
+      .string()
+      .min(1, { message: 'Destination cannot be empty' })
+      .max(20, { message: 'Destination must be at most 20 characters long' }),
     description: z.string().min(1, { message: 'Description cannot be empty' }),
     startDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
       message: 'Please select a valid start date',
@@ -35,7 +42,24 @@ const tripValidationSchema = z
     endDate: z.any().refine((date) => dayjs.isDayjs(date) && date.isValid(), {
       message: 'Please select a valid end date',
     }),
-    budget: z.string().min(1, { message: 'Budget cannot be empty' }),
+    numberOfBookingSpot: z
+      .string()
+      .min(1, { message: 'Number of booking spot cannot be empty' })
+      .refine((value) => parseInt(value) >= 0, {
+        message: 'Number of booking spot must be a non-negative number',
+      }),
+    maxNumberOfPeople: z
+      .string()
+      .min(1, { message: 'Max number of people cannot be empty' })
+      .refine((value) => parseInt(value) >= 0, {
+        message: 'Max number of people must be a non-negative number',
+      }),
+    budget: z
+      .string()
+      .min(1, { message: 'Budget cannot be empty' })
+      .refine((value) => parseFloat(value) >= 0, {
+        message: 'Budget must be a non-negative number',
+      }),
     travelType: z.enum([...travelTypes] as [string, ...string[]], {
       required_error: 'Travel Type is required',
       invalid_type_error:
@@ -63,8 +87,6 @@ const tripValidationSchema = z
 
 function PostTrpPage() {
   const [createTrip, { isLoading }] = useCreateTripMutation();
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-  const [content, setContent] = useState('');
   const router = useRouter();
 
   // Handle Submit Form
@@ -72,7 +94,9 @@ function PostTrpPage() {
     // // Modified the values as backend accepted
     values.startDate = dateTimeUtils.dateFormatter(values.startDate);
     values.endDate = dateTimeUtils.dateFormatter(values.endDate);
+    values.maxNumberOfPeople = Number(values.maxNumberOfPeople);
     values.budget = Number(values.budget);
+    values.numberOfBookingSpot = Number(values.numberOfBookingSpot);
 
     try {
       const res = await createTrip(values).unwrap();
@@ -94,10 +118,13 @@ function PostTrpPage() {
 
   // Default Values
   const defaultValues = {
+    title: '',
     destination: '',
     description: '',
     startDate: '',
     endDate: '',
+    numberOfBookingSpot: '',
+    maxNumberOfPeople: '',
     budget: '',
     travelType: '',
     photos: [],
@@ -110,6 +137,16 @@ function PostTrpPage() {
       resolver={zodResolver(tripValidationSchema)}
     >
       <Grid container spacing={3} sx={{ my: 5 }}>
+        {/* Title */}
+        <Grid item xs={12} sm={12} md={6}>
+          <TBInput
+            name="title"
+            label="Trip Title"
+            fullWidth={true}
+            sx={{ mb: 2 }}
+          />
+        </Grid>
+
         {/* Destination */}
         <Grid item xs={12} sm={12} md={6}>
           <TBInput
@@ -120,8 +157,19 @@ function PostTrpPage() {
           />
         </Grid>
 
+        {/* Max Number of people can come with */}
+        <Grid item xs={12} sm={6} md={4}>
+          <TBInput
+            name="maxNumberOfPeople"
+            type="number"
+            label="Max Number of People Can Come With"
+            fullWidth={true}
+            sx={{ mb: 2 }}
+          />
+        </Grid>
+
         {/* Budget */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={4}>
           <TBInput
             name="budget"
             type="number"
@@ -132,7 +180,7 @@ function PostTrpPage() {
         </Grid>
 
         {/* Travel Types */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={4}>
           <TBSelectField
             items={travelTypes}
             name="travelType"
@@ -143,13 +191,24 @@ function PostTrpPage() {
         </Grid>
 
         {/* Start Date */}
-        <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={4}>
           <TBDatePicker name="startDate" label="Start Date" fullWidth />
         </Grid>
 
         {/* End Date */}
-        <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={4}>
           <TBDatePicker name="endDate" label="End Date" fullWidth />
+        </Grid>
+
+        {/* Total Spots Can be  Booked */}
+        <Grid item xs={12} sm={6} md={4}>
+          <TBInput
+            name="numberOfBookingSpot"
+            type="number"
+            label="Maximum Booking Spot"
+            fullWidth={true}
+            sx={{ mb: 2 }}
+          />
         </Grid>
 
         {/* Description */}
