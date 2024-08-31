@@ -4,7 +4,7 @@ const getRecentTrips = async () => {
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BACKEND_URL as string
-    }/trip?sort=-createdAt&page=1&limit=8&fields=destination,startDate,endDate,budget,travelType,photos`,
+    }/trip?sort=-createdAt&page=1&limit=8&fields=title,destination,startDate,endDate,budget,numberOfBookingSpot,travelType,photos,user`,
     {
       cache: 'no-store',
     }
@@ -30,7 +30,7 @@ const getTrips = async (query: TQuery) => {
   searchParams.append('sort', '-createdAt');
   searchParams.append(
     'fields',
-    'destination,startDate,endDate,budget,travelType,photos'
+    'title,destination,startDate,endDate,budget,numberOfBookingSpot,travelType,photos,user'
   );
 
   const queryString = searchParams.toString();
