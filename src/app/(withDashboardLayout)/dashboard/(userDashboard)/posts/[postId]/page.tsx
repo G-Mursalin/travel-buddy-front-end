@@ -1,4 +1,4 @@
-import EditPost from "@/components/Shared/Post/EditPost";
+import EditTrip from '@/components/Shared/Post/EditTrip';
 
 type TParams = {
   params: {
@@ -8,7 +8,8 @@ type TParams = {
 
 const PostPage = ({ params }: TParams) => {
   const id = params?.postId;
-  return <EditPost id={id} />;
+
+  return <EditTrip id={id} />;
 };
 
 export default PostPage;

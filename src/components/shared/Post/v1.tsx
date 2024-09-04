@@ -3,18 +3,16 @@
 import TBForm from '@/components/Forms/TBForm';
 import TBInput from '@/components/Forms/TBInput';
 import TBSelectField from '@/components/Forms/TBSelectField';
-import { useGetTripQuery, useUpdateTripMutation } from '@/redux/api/tripApi';
-import { ErrorResponse, TJwtPayload, TTrip } from '@/types';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { FieldValues } from 'react-hook-form';
-import { Button, Grid } from '@mui/material';
-import { travelTypes } from '@/constants/travelTypes';
-import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
-import { getUserInfo } from '@/services/auth.services';
 import { USER_ROLE } from '@/constants/role';
+import { travelTypes } from '@/constants/travelTypes';
+import { useGetTripQuery, useUpdateTripMutation } from '@/redux/api/tripApi';
+import { ErrorResponse, TTrip } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Grid } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { FieldValues } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import Spinner from '../Spinner/Spinner';
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -58,7 +56,6 @@ const tripValidationSchema = z.object({
 });
 
 const EditPost = ({ id }: { id: string }) => {
-  const [userRole, setUserRole] = useState('');
   const { data, isLoading, isFetching, refetch } = useGetTripQuery(id);
   const [updateTrip] = useUpdateTripMutation();
   const router = useRouter();
@@ -75,10 +72,10 @@ const EditPost = ({ id }: { id: string }) => {
       refetch();
 
       // Redirect Users
-      if (userRole === USER_ROLE.USER) {
+      if (trip.user.role === USER_ROLE.USER) {
         router.push('/dashboard/posts');
       }
-      if (userRole === USER_ROLE.ADMIN) {
+      if (trip.user.role === USER_ROLE.ADMIN) {
         router.push('/dashboard/admin/trip-management');
       }
     } catch (error: ErrorResponse | any) {
@@ -94,16 +91,6 @@ const EditPost = ({ id }: { id: string }) => {
       }
     }
   };
-
-  useEffect(() => {
-    const user = getUserInfo() as TJwtPayload;
-
-    if (!user) {
-      return router.push('/login');
-    }
-
-    setUserRole(user.role);
-  }, [router]);
 
   if (isLoading || isFetching) {
     return <Spinner />;
