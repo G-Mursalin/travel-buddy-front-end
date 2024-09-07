@@ -52,7 +52,7 @@ const TBImageUploader = ({
     <Controller
       control={control}
       name={name}
-      render={() => (
+      render={({ fieldState: { error } }) => (
         <CldUploadWidget uploadPreset={uploadPreset} onSuccess={handleUpload}>
           {({ open }) => {
             function handleOnClick() {
@@ -63,16 +63,23 @@ const TBImageUploader = ({
               }
             }
             return (
-              <Button
-                onClick={handleOnClick}
-                component="label"
-                variant="contained"
-                sx={sx}
-                fullWidth={fullWidth}
-                startIcon={<CloudUploadIcon />}
-              >
-                {label} ({uploadedImages.length}/{maxUploads})
-              </Button>
+              <>
+                <Button
+                  onClick={handleOnClick}
+                  component="label"
+                  variant="contained"
+                  sx={sx}
+                  fullWidth={fullWidth}
+                  startIcon={<CloudUploadIcon />}
+                >
+                  {label} ({uploadedImages.length}/{maxUploads})
+                </Button>
+                {error && (
+                  <p style={{ color: 'red', fontSize: '12px' }}>
+                    {error.message}
+                  </p>
+                )}
+              </>
             );
           }}
         </CldUploadWidget>

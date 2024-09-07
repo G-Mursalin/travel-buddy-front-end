@@ -79,7 +79,7 @@ const PostsPage = () => {
   // Handle Edit Post
   const handleEdit = () => {
     if (selectedRow) {
-      router.push(`/dashboard/posts/${selectedRow.id}`);
+      router.push(`/dashboard/edit-trip/${selectedRow.id}`);
       handleClose(); // Close the menu after performing the edit action
     }
   };

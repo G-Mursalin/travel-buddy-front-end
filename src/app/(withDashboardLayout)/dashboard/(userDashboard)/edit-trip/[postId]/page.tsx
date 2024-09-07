@@ -11,7 +11,7 @@ type TParams = {
   };
 };
 
-const PostPage = ({ params }: TParams) => {
+function EditTripPage({ params }: TParams) {
   const { data, isLoading, isFetching } = useGetTripQuery(params?.postId);
   const [updateTrip, { isLoading: isUpdating }] = useUpdateTripMutation();
 
@@ -28,6 +28,7 @@ const PostPage = ({ params }: TParams) => {
   const handleEditSubmit = async (values: FieldValues) => {
     updateTrip({ id: trip._id, data: values }).unwrap();
   };
+
   return (
     <EditOrPostTrip
       initialData={trip}
@@ -36,6 +37,6 @@ const PostPage = ({ params }: TParams) => {
       mode="edit"
     />
   );
-};
+}
 
-export default PostPage;
+export default EditTripPage;

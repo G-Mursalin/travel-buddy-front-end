@@ -10,6 +10,7 @@ const roleBasedPrivateRoutes = {
   user: [
     /^\/dashboard$/,
     'post-trip',
+    'edit-trip',
     'posts',
     'trips',
     'trip-requested-history',
