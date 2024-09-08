@@ -1,54 +1,122 @@
-"use client";
+'use client';
 
-import Spinner from "@/components/Shared/Spinner/Spinner";
-import { USER_ROLE, UserStatus } from "@/constants/role";
+import Spinner from '@/components/Shared/Spinner/Spinner';
+import { USER_ROLE, UserStatus } from '@/constants/role';
 import {
   useChangeUserRoleMutation,
   useChangeUserStatusMutation,
   useGetAllUsersQuery,
-} from "@/redux/api/adminApi";
-import { TUser, UserRole } from "@/types";
-import { Box, Button } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+} from '@/redux/api/adminApi';
+import { getUserInfo } from '@/services/auth.services';
+import { ErrorResponse, TUser, UserRole } from '@/types';
+import BlockIcon from '@mui/icons-material/Block';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PersonIcon from '@mui/icons-material/Person';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import { Box, Chip, IconButton, Menu } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export type TRowData = {
   id: string;
   userName: string;
   email: string;
-  status: "in-progress" | "blocked";
+  status: 'in-progress' | 'blocked';
   role: UserRole;
+  profileImage: string;
 };
 
 const UserManagementPage = () => {
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState<TRowData[] | []>([]);
   const { data, isFetching } = useGetAllUsersQuery(undefined);
-  const [changeUserRole, { isLoading }] = useChangeUserRoleMutation();
-  const [changeUserStatus, { isLoading: isChangeStatusLoading }] =
-    useChangeUserStatusMutation();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRow, setSelectedRow] = useState<TRowData | null>(null);
+  const open = Boolean(anchorEl);
+  const [changeUserRole] = useChangeUserRoleMutation();
+  const [changeUserStatus] = useChangeUserStatusMutation();
 
-  const users = data?.data;
+  const loginUser = getUserInfo();
 
-  // Handle Role
-  const handleRoleChange = (rowData: TRowData) => {
-    changeUserRole({
-      id: rowData.id,
-      data: {
-        role:
-          rowData.role === USER_ROLE.USER ? USER_ROLE.ADMIN : USER_ROLE.USER,
-      },
-    });
+  const users: TUser[] = data?.data;
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>, row: TRowData) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedRow(row); // Set the selected row when the menu is opened
   };
 
-  // Handle Status
-  const handleStatusChange = (rowData: TRowData) => {
-    changeUserStatus({
-      id: rowData.id,
-      data: {
-        status:
-          rowData.status === UserStatus[0] ? UserStatus[1] : UserStatus[0],
-      },
-    });
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedRow(null); // Clear the selected row when the menu is closed
+  };
+
+  // Handle Role Change
+  const handleRoleChange = async () => {
+    if (selectedRow) {
+      try {
+        const res = await changeUserRole({
+          id: selectedRow.id,
+          data: {
+            role:
+              selectedRow.role === USER_ROLE.USER
+                ? USER_ROLE.ADMIN
+                : USER_ROLE.USER,
+          },
+        }).unwrap();
+
+        toast.success(res.message);
+      } catch (error: ErrorResponse | any) {
+        if (error.data) {
+          const errorMessage: string = error.data.errorSources.reduce(
+            (acc: string, errorSource: Record<string, any>) =>
+              acc + (acc ? ' ' : '') + errorSource.message,
+            ''
+          );
+          toast.error(errorMessage);
+        } else {
+          toast.error('Fail to change role');
+        }
+      } finally {
+        handleClose(); // Close the menu after performing the delete action
+      }
+    }
+  };
+
+  // Handle Status Change
+  const handleStatusChange = async () => {
+    if (selectedRow) {
+      try {
+        const res = await changeUserStatus({
+          id: selectedRow.id,
+          data: {
+            status:
+              selectedRow.status === UserStatus[0]
+                ? UserStatus[1]
+                : UserStatus[0],
+          },
+        }).unwrap();
+
+        toast.success(res.message);
+      } catch (error: ErrorResponse | any) {
+        if (error.data) {
+          const errorMessage: string = error.data.errorSources.reduce(
+            (acc: string, errorSource: Record<string, any>) =>
+              acc + (acc ? ' ' : '') + errorSource.message,
+            ''
+          );
+          toast.error(errorMessage);
+        } else {
+          toast.error('Fail to change status');
+        }
+      } finally {
+        handleClose(); // Close the menu after performing the delete action
+      }
+    }
   };
 
   useEffect(() => {
@@ -59,6 +127,7 @@ const UserManagementPage = () => {
         email: user.email,
         status: user.status,
         role: user.role,
+        profileImage: user.profileImage,
       };
     });
 
@@ -66,47 +135,112 @@ const UserManagementPage = () => {
   }, [users]);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "User ID", flex: 1 },
-    { field: "userName", headerName: "User Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "status", headerName: "Account Status", flex: 1 },
-    { field: "role", headerName: "Role", flex: 1 },
     {
-      field: "change-role",
-      headerName: "Change Role",
+      field: 'user-profile-image',
+      headerName: 'User Profile Image',
       flex: 1,
-      headerAlign: "center",
-      align: "center",
       renderCell: ({ row }) => {
         return (
-          <Box>
-            <Button
-              onClick={() => handleRoleChange(row)}
-              variant="outlined"
-              size="small"
-            >
-              Change Role
-            </Button>
+          <Box display="flex" alignItems="center" width="100%" height="100%">
+            <Image
+              src={row.profileImage}
+              width={45}
+              height={45}
+              alt={`${row.id}-image`}
+              style={{
+                borderRadius: '50%',
+                objectFit: 'cover',
+                width: '45px',
+                height: '45px',
+              }}
+            />
           </Box>
         );
       },
     },
+    { field: 'userName', headerName: 'User Name', flex: 1 },
+    { field: 'email', headerName: 'Email', flex: 1 },
     {
-      field: "change-status",
-      headerName: "Change Account Status",
+      field: 'status',
+      headerName: 'Account Status',
       flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
+      renderCell: ({ row }: { row: TRowData }) => {
+        return (
+          <Chip
+            title={row.status}
+            label={row.status}
+            color="primary"
+            icon={
+              row.status === UserStatus[0] ? <CheckCircleIcon /> : <BlockIcon />
+            }
+            variant={row.status === UserStatus[0] ? 'outlined' : 'filled'}
+            size="small"
+          />
+        );
+      },
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      flex: 1,
+      renderCell: ({ row }: { row: TRowData }) => {
+        return (
+          <Chip
+            title={row.role}
+            icon={
+              row.role === USER_ROLE.ADMIN ? (
+                <ManageAccountsIcon />
+              ) : (
+                <PersonIcon />
+              )
+            }
+            label={row.role.charAt(0).toUpperCase() + row.role.slice(1)}
+            size="small"
+          />
+        );
+      },
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: ({ row }: { row: TRowData }) => {
+        if (row.id === loginUser?.id) return;
         return (
           <Box>
-            <Button
-              onClick={() => handleStatusChange(row)}
-              variant="outlined"
-              size="small"
+            <IconButton
+              aria-label="more"
+              id={row.id}
+              aria-haspopup="true"
+              onClick={(event) => handleClick(event, row)}
             >
-              Change Status
-            </Button>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id={row.id}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={handleRoleChange}
+                disableRipple
+                sx={{ gap: 1 }}
+              >
+                <ChangeCircleIcon />
+                Change Role
+              </MenuItem>
+              <MenuItem
+                onClick={handleStatusChange}
+                disableRipple
+                sx={{ gap: 1 }}
+              >
+                <PublishedWithChangesIcon />
+                Change Status
+              </MenuItem>
+            </Menu>
           </Box>
         );
       },
@@ -122,6 +256,7 @@ const UserManagementPage = () => {
             hideFooterPagination
             rows={allUsers ?? []}
             columns={columns}
+            rowSelection={false}
           />
         </Box>
       ) : (

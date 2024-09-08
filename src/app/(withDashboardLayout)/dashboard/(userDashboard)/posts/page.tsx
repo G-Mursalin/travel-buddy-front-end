@@ -5,13 +5,13 @@ import {
   useDeleteTripMutation,
   useGetLoginUserTripsQuery,
 } from '@/redux/api/tripApi';
-import { ErrorResponse, TTrip } from '@/types';
+import { ErrorResponse, IMeta, TTrip } from '@/types';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PlaceIcon from '@mui/icons-material/Place';
-import { Box } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -19,29 +19,41 @@ import MenuItem from '@mui/material/MenuItem';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 type TRow = {
   id: string;
   photo: string;
+  title: string;
   destination: string;
-  description: string;
   startDate: string;
   endDate: string;
-  budget: string;
+  travelType: string;
+  budget: number;
 };
 
 const PostsPage = () => {
-  const [allTrips, setAllTrips] = useState([]);
-  const { data, isFetching, isLoading } = useGetLoginUserTripsQuery(undefined);
+  const [allTrips, setAllTrips] = useState<TRow[] | null>([]);
   const [deleteTrip] = useDeleteTripMutation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRow, setSelectedRow] = useState<TRow | null>(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
   const open = Boolean(anchorEl);
   const router = useRouter();
 
-  const trips = data?.data;
+  const query: Record<string, any> = {};
+
+  query['page'] = page;
+  query['limit'] = limit;
+
+  const { data, isFetching, isLoading } = useGetLoginUserTripsQuery({
+    ...query,
+  });
+
+  const trips: TTrip[] = data?.data;
+  const meta: IMeta = data?.meta;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, row: TRow) => {
     setAnchorEl(event.currentTarget);
@@ -82,6 +94,11 @@ const PostsPage = () => {
       router.push(`/dashboard/edit-trip/${selectedRow.id}`);
       handleClose(); // Close the menu after performing the edit action
     }
+  };
+
+  // Handle Pagination
+  const handleChange = (event: ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   useEffect(() => {
@@ -224,6 +241,26 @@ const PostsPage = () => {
             autoHeight
             rows={allTrips ?? []}
             columns={columns}
+            slots={{
+              footer: () => {
+                return (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Pagination
+                      color="primary"
+                      count={meta?.totalPage}
+                      page={page}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                );
+              },
+            }}
           />
         </Box>
       ) : (

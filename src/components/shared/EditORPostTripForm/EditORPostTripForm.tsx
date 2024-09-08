@@ -18,6 +18,7 @@ import { travelTypes } from '@/constants/travelTypes';
 import { dateTimeUtils } from '@/utils/dateTimeUtils';
 import { ErrorResponse, TTrip } from '@/types';
 import { USER_ROLE } from '@/constants/role';
+import { getUserInfo } from '@/services/auth.services';
 // Dynamically import TBRichTextEditor with SSR disabled
 const TBRichTextEditor = dynamic(
   () => import('@/components/Forms/TBRichTextEditor'),
@@ -99,6 +100,7 @@ const EditOrPostTrip = ({
   mode,
 }: TEditOrPostTripProps) => {
   const router = useRouter();
+  const user = getUserInfo();
 
   // Handle Submit Form
   const handleFormSubmit = async (values: FieldValues) => {
@@ -117,9 +119,9 @@ const EditOrPostTrip = ({
           : 'Trip created successfully'
       );
       if (mode === 'edit') {
-        if (initialData?.user.role === USER_ROLE.USER) {
+        if (user?.role === USER_ROLE.USER) {
           router.push('/dashboard/posts');
-        } else if (initialData?.user.role === USER_ROLE.ADMIN) {
+        } else if (user?.role === USER_ROLE.ADMIN) {
           router.push('/dashboard/admin/trip-management');
         }
       } else {

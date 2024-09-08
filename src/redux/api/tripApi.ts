@@ -1,5 +1,5 @@
-import { tagTypes } from "../tag-types";
-import { baseApi } from "./baseApi";
+import { tagTypes } from '../tag-types';
+import { baseApi } from './baseApi';
 
 export const tripApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -7,8 +7,8 @@ export const tripApi = baseApi.injectEndpoints({
     getAllTrips: build.query({
       query: (arg: Record<string, any>) => {
         return {
-          url: "/trip",
-          method: "GET",
+          url: '/trip',
+          method: 'GET',
           params: arg,
         };
       },
@@ -16,10 +16,11 @@ export const tripApi = baseApi.injectEndpoints({
     }),
     // Get Login user Trips
     getLoginUserTrips: build.query({
-      query: () => {
+      query: (arg: Record<string, any>) => {
         return {
-          url: "/trip/my-posts",
-          method: "GET",
+          url: '/trip/my-posts',
+          method: 'GET',
+          params: arg,
         };
       },
       providesTags: [tagTypes.trip],
@@ -29,7 +30,7 @@ export const tripApi = baseApi.injectEndpoints({
       query: (id: string) => {
         return {
           url: `/trip/${id}`,
-          method: "GET",
+          method: 'GET',
         };
       },
       providesTags: [tagTypes.trip],
@@ -37,8 +38,8 @@ export const tripApi = baseApi.injectEndpoints({
     // Create a Trip
     createTrip: build.mutation({
       query: (data) => ({
-        url: "/trip",
-        method: "POST",
+        url: '/trip',
+        method: 'POST',
         body: data,
       }),
       invalidatesTags: [tagTypes.trip],
@@ -47,7 +48,7 @@ export const tripApi = baseApi.injectEndpoints({
     deleteTrip: build.mutation({
       query: (id) => ({
         url: `/trip/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
       invalidatesTags: [tagTypes.trip, tagTypes.tripRequest],
     }),
@@ -55,7 +56,7 @@ export const tripApi = baseApi.injectEndpoints({
     updateTrip: build.mutation({
       query: ({ id, data }) => ({
         url: `/trip/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: { ...data },
       }),
       invalidatesTags: [tagTypes.trip, tagTypes.tripRequest],
